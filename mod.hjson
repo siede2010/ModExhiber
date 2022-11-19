@@ -14,7 +14,7 @@ main: "exhiber.ExhiberMain"
 description: "A Mindustry Java mod "
 
 #the mod version
-version: 0.0.1
+version: 0.0.4
 
 #the minimum game build required to run this mod
 minGameVersion: 137
