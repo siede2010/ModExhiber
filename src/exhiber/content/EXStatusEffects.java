@@ -9,7 +9,7 @@ import mindustry.type.StatusEffect;
 public class EXStatusEffects {
     public static StatusEffect
         scabbed,ballistic,protectivePlating,advancedPlating,crunched,infrafluxed
-            , slowing , polishHit
+            , slowing , polishHit,cheronHit
             ;
 
         public static void EXload(){
@@ -75,6 +75,12 @@ public class EXStatusEffects {
                 show = false;
                 speedMultiplier = 0.2f;
                 dragMultiplier = 0.02f;
+            }};
+            cheronHit = new StatusEffect("cheron-hit"){{
+                localizedName = "Cheron Hit";
+                show = false;
+                speedMultiplier = 0.2f;
+                dragMultiplier = 2;
             }};
         }
 }
