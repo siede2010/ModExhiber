@@ -8,7 +8,7 @@ name: "exhiber"
 author: "Siede & Vdoble & Thomas the Cat"
 
 #the fully qualified main class of the mod
-main: "exhiber.ExhiberMain"
+main: "src.exhiber.ExhiberMain"
 
 #the mod description as seen in the mod dialog
 description: "A Mindustry Java mod "
