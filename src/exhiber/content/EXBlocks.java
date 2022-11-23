@@ -2,6 +2,7 @@ package exhiber.content;
 
 import arc.graphics.Color;
 import arc.math.Mathf;
+import arc.struct.EnumSet;
 import arc.struct.Seq;
 import exhiber.world.block.*;
 import exhiber.world.block.crafter.MultiLiquifier;
@@ -25,6 +26,7 @@ import mindustry.entities.pattern.ShootBarrel;
 import mindustry.entities.pattern.ShootPattern;
 import mindustry.entities.pattern.ShootSpread;
 import mindustry.graphics.CacheLayer;
+import mindustry.graphics.Layer;
 import mindustry.graphics.Pal;
 import mindustry.type.*;
 import mindustry.type.unit.MissileUnitType;
@@ -50,6 +52,8 @@ import mindustry.world.blocks.units.UnitAssembler;
 import mindustry.world.blocks.units.UnitAssemblerModule;
 import mindustry.world.draw.*;
 import mindustry.world.meta.Attribute;
+import mindustry.world.meta.BlockFlag;
+
 import static mindustry.type.ItemStack.with;
 
 public class EXBlocks{
@@ -79,7 +83,7 @@ public class EXBlocks{
             tunnelExtractor,superfluxForge,
             //Turrets
             swift,dispel,reflect,tensor,flow,scourge,effervescence,descent,
-            polish,conflict,bind,drumicade,pitchfork,relegation,smithery,
+            polish,conflict,bind,drumicade,sinusoidal,pitchfork,relegation,smithery,
             //Modules
             moduleMK1,moduleMK2,electricModuleEM1,
             //Units
@@ -861,6 +865,7 @@ public class EXBlocks{
                 range = 4.6f * (0.8f * 60f);
                 reload = 60f/1.4f;
                 size = 3;
+                health = 2100;
                 ammo(
                     EXItems.vanadium,new BulletType()
                         {{
@@ -1024,6 +1029,38 @@ public class EXBlocks{
                                         }
                                     });
                                 }};
+                        }}
+                );
+            }};
+            sinusoidal = new LiquidTurret("sinusoidal"){{
+                requirements(Category.turret,with(EXItems.zinc,500));
+                localizedName = "Sinusoidal";
+                size = 3;
+                recoil = 0f;
+                reload = 3f;
+                inaccuracy = 5f;
+                shootCone = 50f;
+                liquidCapacity = 10f;
+                shootEffect = Fx.shootLiquid;
+                health = 2300;
+                range = 110f;
+                flags = EnumSet.of(BlockFlag.turret, BlockFlag.extinguisher);
+                ammo(
+                        Liquids.nitrogen,new LiquidBulletType(Liquids.nitrogen){{
+                            damage = 10;
+                            status = StatusEffects.freezing;
+                            statusDuration = 240f;
+                            knockback = 0.02f;
+                            drag = -0.5f;
+                            layer = Layer.bullet - 2f;
+                        }},
+                        EXLiquids.ammonia,new LiquidBulletType(EXLiquids.ammonia){{
+                            damage = 4;
+                            status = EXStatusEffects.scabbed;
+                            statusDuration = 120f;
+                            knockback =- 0.02f;
+                            drag = 0.01f;
+                            layer = Layer.bullet - 2f;
                         }}
                 );
             }};
