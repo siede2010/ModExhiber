@@ -9,7 +9,7 @@ import mindustry.type.StatusEffect;
 public class EXStatusEffects {
     public static StatusEffect
         scabbed,ballistic,protectivePlating,advancedPlating,crunched,infrafluxed
-            , slowing , polishHit,cheronHit
+            , slowing , polishHit,cheronHit,antiScabbed
             ;
 
         public static void EXload(){
@@ -81,6 +81,13 @@ public class EXStatusEffects {
                 show = false;
                 speedMultiplier = 0.2f;
                 dragMultiplier = 2;
+            }};
+            antiScabbed = new StatusEffect("anti-scabbed"){{
+                localizedName = "Anti Scabbed";
+                show = false;
+                init(() -> {
+                    opposite(scabbed);
+                });
             }};
         }
 }
