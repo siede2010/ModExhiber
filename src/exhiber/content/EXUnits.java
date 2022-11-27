@@ -1140,7 +1140,7 @@ public class EXUnits{
         }};
         titania = new UnitType("titania") {{
             localizedName = "Titania";
-            description = "Uhh. Boss Go BRRRR. a Close to T3 Boss.";
+            description = "Hell Nah.";
             outlineColor = Color.valueOf("313131");
             health = 12000;
             armor = 5;
@@ -1158,30 +1158,6 @@ public class EXUnits{
             );
             flying = true;
             weapons.add(
-                    new Weapon() {
-                        {
-                            x = 0;
-                            y = 10;
-                            reload = 60f/0.3f;
-                            bullet = new LaserBulletType(400) {
-                                {
-                                    recoil = 1f;
-                                    lifetime = 120;
-                                    lightningDamage = 120;
-                                    chargeEffect = Fx.bigShockwave;
-                                    length = 36*8;
-                                    width = 50;
-
-                                    damage = 120;
-                                    hitShake = 2;
-                                    despawnShake = 2;
-                                    buildingDamageMultiplier = 0.8f;
-                                    lightColor = lightningColor = trailColor = hitColor = Pal.turretHeat;
-                                    colors = new Color[]{Pal.turretHeat, Pal.lightFlame, Pal.darkFlame};
-                                }
-                            };
-                        }
-                    },
                     new Weapon(name("titania-gun")) {{
                         x = -18;
                         y = 12.5f;
@@ -1191,7 +1167,7 @@ public class EXUnits{
                         rotate = true;
                         alternate = true;
                         mirror = true;
-                        rotationLimit = 45;
+                        rotationLimit = 90;
                         shoot = new ShootSpread(2,2);
                         top = false;
                         bullet = new LaserBulletType(62) {{
@@ -1214,25 +1190,28 @@ public class EXUnits{
                     }},
                     new Weapon(name("titania-mount")) {{
                         x = 13;
-                        y = -17;
-                        reload = 60f/2.4f;
+                        y = -16;
+                        reload = 60f/1.4f;
                         mirror = true;
                         top = true;
                         rotate = true;
                         recoil = 2f;
-                        shoot.shots = 2;
-                        shoot.shotDelay = 4f;
-                        inaccuracy = 5;
-                        bullet = new BulletType() {{
-                            recoil = 0.2f;
-                            shootEffect = Fx.unitSpawn;
-                            hitColor = Pal.suppress;
-                            speed = 0f;
-                            hitShake = 3;
-                            shake = 3;
-                            keepVelocity = false;
-                            spawnUnit = titaniaMissile;
-                        }};
+                        bullet = new LaserBulletType(200) {
+                            {
+                                recoil = 1f;
+                                lifetime = 120;
+                                lightningDamage = 120;
+                                chargeEffect = Fx.bigShockwave;
+                                length = 36*8;
+                                width = 32;
+                                damage = 120;
+                                hitShake = 2;
+                                despawnShake = 2;
+                                buildingDamageMultiplier = 0.8f;
+                                lightColor = lightningColor = trailColor = hitColor = Pal.turretHeat;
+                                colors = new Color[]{Pal.turretHeat, Pal.lightFlame, Pal.darkFlame};
+                            }
+                        };
                     }}
             );
         }};

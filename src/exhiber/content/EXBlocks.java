@@ -1047,11 +1047,12 @@ public class EXBlocks{
                 flags = EnumSet.of(BlockFlag.turret, BlockFlag.extinguisher);
                 ammo(
                         Liquids.nitrogen,new LiquidBulletType(Liquids.nitrogen){{
-                            damage = 10;
+                            damage = 16;
                             status = StatusEffects.freezing;
                             statusDuration = 240f;
                             knockback = 0.02f;
-                            drag = -0.5f;
+                            rangeChange = -64;
+                            drag = -0.2f;
                             layer = Layer.bullet - 2f;
                         }},
                         EXLiquids.ammonia,new LiquidBulletType(EXLiquids.ammonia){{
