@@ -63,6 +63,7 @@ public class EXBlocks{
             ClaySolidWall,marmatiteFloor,marmatiteWall,patroniteFloor,patroniteWall,
             zincNitrateFloor,zincNitrateWall,chalkClogs,marmatiteRocks,
             vanadiumFloor,vantraxPlating1,vantraxPlating2,vantraxPlating3,vantraxPlating4,
+            metalFloorB,metalFloorH,metalFloorP,
             /*Ore's*/clayOre,diamondOre,radiumOre,vanadiumOre,zincOre,copperOre,
             //Effects
             /*Cores*/corePad,coreVessel,
@@ -263,7 +264,24 @@ public class EXBlocks{
             vantraxPlating2 = new Floor("vantrax-plating-2",0){{localizedName = "Vantrax Plating 2";}};
             vantraxPlating3 = new Floor("vantrax-plating-3",0){{localizedName = "Vantrax Plating 3";}};
             vantraxPlating4 = new Floor("vantrax-plating-4",0){{localizedName = "Vantrax Plating 4";}};
+            metalFloorB = new Floor("metal-floor-b",0)
+            {{
+                localizedName = "Metal Floor B";
+                status = StatusEffects.overclock;
+                statusDuration = 30f;
+            }};
+            metalFloorH = new Floor("metal-floor-h",0)
+            {{
+                localizedName = "Metal Floor B";
+                damageTaken = -30f/60f;
 
+            }};
+            metalFloorP = new Floor("metal-floor-p",0)
+            {{
+                localizedName = "Metal Floor P";
+                status = EXStatusEffects.antiScabbed;
+                statusDuration = 120f;
+            }};
             nitrogenPool = new Floor("nitrogen-pool",0){{
                 attributes.set(EXAttributes.watermill,1f/4f);
                 localizedName = "Nitrogen Pool";
