@@ -2,13 +2,14 @@ package exhiber.content;
 
 import arc.Core;
 import arc.graphics.Color;
+import exhiber.world.statusEffect.StatusEffectStack;
 import mindustry.content.StatusEffects;
 import mindustry.entities.Effect;
 import mindustry.type.StatusEffect;
 
 public class EXStatusEffects {
     public static StatusEffect
-        scabbed,ballistic,protectivePlating,advancedPlating,crunched,infrafluxed
+        scabbed,detained,ballistic,protectivePlating,advancedPlating,crunched,infrafluxed
             , slowing , polishHit,cheronHit,antiScabbed
             ;
 
@@ -24,6 +25,16 @@ public class EXStatusEffects {
                 init(() -> {
                     opposite(protectivePlating);
                 });
+            }};
+            detained = new StatusEffectStack("detained"){{
+                localizedName = "Detained";
+                description = "Being Detained Will lower the movement speed the more often it happends.";
+                speedMultiplier = 0.9f;
+                reloadMultiplier = 0.9f;
+                buildSpeedMultiplier = 0.9f;
+                damage = 1.11111111111112f;
+                charges = 9;
+                staticStat();
             }};
             ballistic = new StatusEffect("ballistic"){{
                 localizedName = "Ballistic";

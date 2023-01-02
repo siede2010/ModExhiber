@@ -5,7 +5,10 @@ displayName: "Exhiber"
 name: "exhiber"
 
 #your name
-author: "Siede & Vdoble & Thomas the Cat"
+author: "Coordinator and SFX - Vdoble MSG
+         Coding - Siede
+         Spriting - Vdoble MSG, Ethanol10, Thomas, FrireDragon
+         Mapping - Nicodium, Vdoble MSG"
 
 #the fully qualified main class of the mod
 main: "exhiber.ExhiberMain"

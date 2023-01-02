@@ -81,7 +81,7 @@ public class EXBlocks{
             chalkScraper,turboDrill,powerDrill,nitroDrill,
             //Crafters
             magnifyingGlass,rainCollector,brassForge,quartzRecrystallizer,tartarusRadiator,tartarusImpulator,
-            tunnelExtractor,superfluxForge,
+            tunnelExtractor,superfluxForge,diamondCompressor,
             //Turrets
             swift,dispel,reflect,tensor,flow,scourge,effervescence,descent,
             polish,conflict,bind,drumicade,sinusoidal,pitchfork,relegation,smithery,
@@ -374,6 +374,16 @@ public class EXBlocks{
                 drillTime = 100;
                 liquidBoostIntensity = 1;
                 tier = 1;
+            }};
+            diamondCompressor = new GenericCrafter("diamond-compressor"){{
+                requirements(Category.crafting,with(EXItems.zinc,80,EXItems.chalk,200,EXItems.tenorite,50));
+                localizedName = "Diamond Compressor";
+                size = 1;
+                craftTime = 150;
+                consumeItems(with(EXItems.chalk,8));
+                outputItem = new ItemStack(EXItems.diamond,2);
+                craftEffect = Fx.smoke;
+
             }};
             zincConduit = new Conduit("zinc-conduit"){{
                 requirements(Category.liquid,with(EXItems.zinc,2,EXItems.diamond,2));
@@ -826,7 +836,8 @@ public class EXBlocks{
                 targetGround = true;
                 damage = 27f/60f;
                 range = 32*8;
-                force = 0;
+                force = 2;
+                scaledForce = 3;
                 status = EXStatusEffects.polishHit;
                 statusDuration = 60f;
                 rotateSpeed = 10;
@@ -1112,7 +1123,7 @@ public class EXBlocks{
                 drillTime = 160;
                 consumeLiquid(Liquids.nitrogen,12f/60f);
             }};
-            moduleAssembler = new SelectiveConstructor("module-assembler",new Block[]{moduleMK1,swift,dispel,brassWall,vanadiumMender,clayWall,electricModuleEM1,reflect,tensor}){{
+            moduleAssembler = new SelectiveConstructor("module-assembler",new Block[]{moduleMK1,swift,dispel,brassWall,vanadiumWall,vanadiumMender,clayWall,electricModuleEM1,reflect,tensor}){{
                 requirements(Category.units,with(EXItems.zinc,100,EXItems.diamond,20,EXItems.chalk,80));
                 localizedName = "Module Assembler";
                 maxBlockSize = 3;

@@ -29,6 +29,7 @@ public class ExhiberMain extends Mod {
     }
     @Override
     public void loadContent(){
+        EXStats.load();
         ExEffects.load();
         EXAttributes.load();
         EXTeams.load();

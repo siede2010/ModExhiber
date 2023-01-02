@@ -121,7 +121,7 @@ public class EXUnits{
                         lifetime = 110;
                         damage = 20;
                         drag = 0.1f;
-                        status = StatusEffects.freezing;
+                        status = EXStatusEffects.detained;
                         buildingDamageMultiplier = 0.05f;
                         liquid = Liquids.cryofluid;
                         puddleAmount = 4;
@@ -199,7 +199,7 @@ public class EXUnits{
         }};
         rouge = new UnitType("rouge") {{ //Todo
             constructor = EntityMapping.map("merui");
-            localizedName = "Roge";
+            localizedName = "Rouge";
             health = 3600;
             legCount = 6;
             legGroupSize = 3;
@@ -913,6 +913,19 @@ public class EXUnits{
             legCount = 4;
             legLength = 6f;
             legGroupSize = 4;
+            weapons.add(new Weapon(){{
+                reload = 30f;
+                mirror = false;
+                top = true;
+                x = 0;
+                y = 0;
+                bullet = new LaserBoltBulletType(setRange(1,3.4f),6)
+                {{
+                    lifetime = setRange(10,speed);
+                    damage = 6;
+                    backColor = trailColor = lightColor = frontColor = Pal.heal;
+                }};
+            }});
         }};
         bonfireUp = new UnitType("bonfire-up") {{
             localizedName = "Hover";
