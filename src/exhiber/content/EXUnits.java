@@ -1055,6 +1055,8 @@ public class EXUnits{
             abilities.add(new FixedRegenAbility(40,0));
             immunities.add(EXStatusEffects.scabbed);
             hitSize = 2.4f*8f;
+            legLength = 2.4f*8f;
+            legCount = 3;
             health = 6200;
             armor = 10;
             speed = 1f/7.5f;
