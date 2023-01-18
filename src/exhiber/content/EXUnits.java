@@ -3,6 +3,7 @@ package exhiber.content;
 import arc.graphics.*;
 import arc.struct.*;
 import exhiber.entities.EnemyStatusFieldAbility;
+import exhiber.world.abilitys.FixedRegenAbility;
 import mindustry.ai.types.*;
 import mindustry.content.*;
 import mindustry.entities.abilities.*;
@@ -27,7 +28,7 @@ public class EXUnits{
     /*Missile's*/titaniaMissile,
     /*Stealth Path*/sentry,sentryUp,stalker,heatseeker,
     /*Rampage Path*/loner,lonerUp,rouge,rougeUp,revenger,
-    /*Protector Path*/bonfire,bonfireUp,campfire,barrack,
+    /*Protector Path*/bonfire,bonfireUp,campfire,campfireUp,barrack,
     /*Freezing Path*/polar,polarUp,brainFreeze,frostBite,
     /*Kaon Path (Lava Path)*/cheron,
     /*Extra units*/maxwell,smallTrajectoryCar, largeTrajectoryCar,
@@ -1046,69 +1047,163 @@ public class EXUnits{
                 }};
             }});
         }};
-        barrack = new UnitType("barrack") {{
-            localizedName = "Barrack";
+        campfireUp = new UnitType("campfire-up")
+        {{
+            localizedName = "Paladin";
             constructor = EntityMapping.map("arkyid");
-            abilities.add(new SpawnDeathAbility(campfire, 1, 0));
-            abilities.add(new SpawnDeathAbility(loner, 2, 0));
-            abilities.add(new UnitSpawnAbility(sentry, 120f * 60f, 18, 0), new UnitSpawnAbility(sentry, 120f * 60f, -18, 0));
+            abilities.add(new SpawnDeathAbility(loner,1,0));
+            abilities.add(new FixedRegenAbility(40,0));
             immunities.add(EXStatusEffects.scabbed);
-            hitSize = 4f * 10f;
-            health = 32000;
-            armor = 25;
-            faceTarget = true;
-            baseRotateSpeed = 10;
-            speed = 1.3f / 7.5f;
-            legCount = 8;
-            legLength = 30f;
-            weapons.add(new RepairBeamWeapon(name("barrack-mendb")) {{
-                x = 12f;
-                y = 12f;
-                shootY = 3f;
-                beamWidth = 1.2f;
-                mirror = true;
-                top = true;
-                repairSpeed = 0.75f;
-
-                bullet = new BulletType() {{
-                    maxRange = 13 * 8f;
-                }};
-            }});
-            weapons.add(new RepairBeamWeapon(name("barrack-mendb")) {{
-                x = 12f;
-                y = -12f;
-                shootY = 3f;
-                beamWidth = 1.2f;
-                mirror = true;
-                top = true;
-                repairSpeed = 0.75f;
-
-                bullet = new BulletType() {{
-                    maxRange = 13 * 8f;
-                }};
-            }});
-            weapons.add(new Weapon(name("")) {{
+            hitSize = 2.4f*8f;
+            health = 6200;
+            armor = 10;
+            speed = 1f/7.5f;
+            weapons.add(new Weapon(name("campfire-up-ugun")){{
                 x = 0;
                 y = 0;
+                rotate = true;
+                rotateSpeed = 90f/60f;
+                autoTarget = true;
+                controllable = false;
+                layerOffset -=0.02f;
+                top = true;
                 mirror = false;
-                reload = 240f;
-
-                bullet = new BasicBulletType(1, 120) {{
-                    width = 30;
-                    height = 30;
-                    lifetime = setRange(6, 1);
-                    shrinkX = shrinkY = 20f / (lifetime / 2f);
-                    trailColor = lightColor = backColor = frontColor = Color.white;
-                    trailWidth = 0.4f;
-                    trailLength = 15;
-                    splashDamage = 120;
-                    splashDamageRadius = 24;
-                    scaledSplashDamage = true;
-                    buildingDamageMultiplier = 3f;
-                    despawnEffect = hitEffect = Fx.massiveExplosion;
-                    shootEffect = Fx.greenBomb;
+                reload = 6f*60f;
+                bullet = new BulletType() {{
+                    shootEffect = Fx.unitSpawn;
+                    hitColor = Pal.suppress;
+                    speed = 0f;
+                    hitShake = 3;
+                    shake = 3;
+                    keepVelocity = false;
+                    spawnUnit = new MissileUnitType("campfire-up-missile") {{
+                        lifetime = setRange(34, 4.6f);
+                        speed = 4.6f;
+                        maxRange = 5f;
+                        health = 70;
+                        rotateSpeed *= 1.5f;
+                        homingDelay = 10f;
+                        homingPower = 0.1f;
+                        lowAltitude = true;
+                        engineSize = 3f;
+                        deathExplosionEffect = Fx.none;
+                        abilities.add(new SpawnDeathAbility(loner,1,0));
+                        weapons.add(new Weapon() {
+                            {
+                                shootCone = 360f;
+                                mirror = false;
+                                reload = 1f;
+                                shootOnDeath = true;
+                                bullet = new ExplosionBulletType(80f, 8f) {
+                                    {
+                                        suppressionRange = 140f;
+                                        shootEffect = new ExplosionEffect() {{
+                                            lifetime = 50f;
+                                            waveStroke = 5f;
+                                            waveLife = 8f;
+                                            waveColor = Color.white;
+                                            sparkColor = smokeColor = Pal.turretHeat;
+                                            waveRad = 40f;
+                                            smokeSize = 4f;
+                                            smokes = 7;
+                                            smokeSizeBase = 0f;
+                                            sparks = 10;
+                                            sparkRad = 40f;
+                                            sparkLen = 6f;
+                                            sparkStroke = 2f;
+                                        }};
+                                        status = StatusEffects.unmoving;
+                                        statusDuration = 240;
+                                    }
+                                };
+                            }
+                        });
+                    }};
                 }};
             }});
+        }};
+        barrack = new UnitType("barrack") {
+            {
+                localizedName = "Barrack";
+                constructor = EntityMapping.map("arkyid");
+                abilities.add(new SpawnDeathAbility(campfire, 1, 4));
+                abilities.add(new SpawnDeathAbility(rouge, 2, 4));
+                abilities.add(new SpawnDeathAbility(brainFreeze, 2, 4));
+                immunities.add(EXStatusEffects.scabbed);
+                hitSize = 4f * 10f;
+                health = 32000;
+                armor = 25;
+                faceTarget = true;
+                baseRotateSpeed = 2;
+                speed = 1.3f / 7.5f;
+                legCount = 8;
+                legLength = 30f;
+                weapons.add(
+                new Weapon(name("barrack-terror")) {{
+                    x = 10;
+                    y = -10;
+                    controllable = false;
+                    autoTarget = true;
+                    mirror = true;
+                    top = true;
+                    rotate = true;
+                    rotateSpeed = 90f / 60f;
+                    reload = 60f / 12f;
+
+                    bullet = new LaserBoltBulletType(6, 11) {{
+                        width = 6;
+                        height = 6;
+                        lifetime = setRange(26, 6);
+                        shrinkX = shrinkY = 5f / (lifetime / 2f);
+                        trailColor = lightColor = backColor = Pal.heal;
+                        trailWidth = 2f;
+                        trailLength = 15;
+                        splashDamage = 5;
+                        splashDamageRadius = 24;
+                        scaledSplashDamage = true;
+                        buildingDamageMultiplier = 2f;
+                        despawnEffect = hitEffect = Fx.greenLaserChargeSmall;
+                        shootEffect = Fx.greenCloud;
+                    }};
+                }},
+                        new Weapon(name("barrack-terror")) {{
+                            x = 10;
+                            y = 10;
+                            controllable = false;
+                            autoTarget = true;
+                            mirror = true;
+                            top = true;
+                            rotate = true;
+                            rotateSpeed = 90f / 60f;
+                            reload = 60f / 12f;
+
+                            bullet = new LaserBoltBulletType(6, 11) {{
+                                width = 6;
+                                height = 6;
+                                lifetime = setRange(26, 6);
+                                shrinkX = shrinkY = 5f / (lifetime / 2f);
+                                trailColor = lightColor = backColor = Pal.heal;
+                                trailWidth = 2f;
+                                trailLength = 15;
+                                splashDamage = 5;
+                                splashDamageRadius = 24;
+                                scaledSplashDamage = true;
+                                buildingDamageMultiplier = 2f;
+                                despawnEffect = hitEffect = Fx.greenLaserChargeSmall;
+                                shootEffect = Fx.greenCloud;
+                            }};
+                        }},
+                        new RepairBeamWeapon(name("barrack-mendb")) {{
+                            x = 18;
+                            y = 0;
+                            mirror = true;
+                            top = true;
+                            beamWidth = 1.2f;
+                            repairSpeed = 20f / 60f;
+                            bullet = new BulletType() {{
+                                maxRange = 8 * 16;
+                            }};
+                        }});
         }};
         cheron = new UnitType("cheron") {{
             localizedName = "Cheron";

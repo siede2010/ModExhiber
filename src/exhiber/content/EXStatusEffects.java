@@ -32,7 +32,7 @@ public class EXStatusEffects {
                 speedMultiplier = 0.9f;
                 reloadMultiplier = 0.9f;
                 buildSpeedMultiplier = 0.9f;
-                damage = 1.11111111111112f;
+                damage = 1.11111111111112f/60f;
                 charges = 9;
                 staticStat();
             }};
