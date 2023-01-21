@@ -383,7 +383,6 @@ public class EXBlocks{
                 consumeItems(with(EXItems.chalk,8));
                 outputItem = new ItemStack(EXItems.diamond,2);
                 craftEffect = Fx.smoke;
-
             }};
             zincConduit = new Conduit("zinc-conduit"){{
                 requirements(Category.liquid,with(EXItems.zinc,2,EXItems.diamond,2));

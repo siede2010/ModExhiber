@@ -1001,6 +1001,42 @@ public class EXUnits{
             legCount = 4;
             legLength = 15f;
             legGroupSize = 4;
+            weapons.add(new Weapon(name("")){{
+                x = 0;
+                y = 4;
+                mirror = false;
+                top = false;
+                reload = 60f/0.8f;
+                bullet = new LaserBoltBulletType(4f,45)
+                {{
+                    lifetime = setRange(20,this.speed);
+                    trailWidth = 2;
+                    trailLength = 30;
+                    trailColor = backColor = lightColor = Pal.heal;
+                    despawnShake = hitShake = 1;
+                    ejectEffect = Fx.greenCloud;
+                    smokeEffect = Fx.greenCloud;
+                    knockback = -0.5f;
+                    fragRandomSpread = 0;
+                    fragLifeMin = fragLifeMax = 1;
+                    fragVelocityMin = fragVelocityMax = 1;
+                    fragSpread = 30;
+                    fragBullets = 12;
+                    fragBullet = new LaserBoltBulletType(8,5)
+                    {{
+                        lifetime = setRange(14,this.speed);
+                        trailWidth = 2;
+                        trailLength = 15;
+                        homingPower = 0.04f;
+                        trailColor = backColor = lightColor = Pal.heal;
+                        despawnShake = hitShake = 0.2f;
+                        ejectEffect = Fx.greenCloud;
+                        smokeEffect = Fx.greenCloud;
+                        knockback = -2;
+                    }};
+                    despawnEffect = hitEffect = Fx.greenLaserCharge;
+                }};
+            }});
             weapons.add(new RepairBeamWeapon(name("campfire-repair")) {{
                 x = 4f;
                 y = -4f;
@@ -1030,6 +1066,7 @@ public class EXUnits{
                 reload = 24f;
                 shootCone = 180f;
                 shootSound = Sounds.explosion;
+                controllable = false;
                 x = shootY = 0f;
                 mirror = false;
                 bullet = new BulletType() {{

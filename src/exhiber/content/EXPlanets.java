@@ -44,8 +44,7 @@ public class EXPlanets extends Planets {
                 atmosphereRadOut = 0.5f;
                 landCloudColor = Color.valueOf("ffffff");
                 bloom = true;
-                hiddenItems.addAll(Items.serpuloItems);
-                hiddenItems.addAll(Items.erekirItems);
+                hiddenItems.addAll(Item.getAllOres()).removeAll(EXItems.exhiberItems);
 
             }};
 
