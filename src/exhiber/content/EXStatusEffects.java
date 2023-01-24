@@ -10,7 +10,7 @@ import mindustry.type.StatusEffect;
 public class EXStatusEffects {
     public static StatusEffect
         scabbed,detained,ballistic,protectivePlating,advancedPlating,crunched,infrafluxed
-            , slowing , polishHit,cheronHit,antiScabbed
+            , slowing , polishHit,cheronHit,antiScabbed,leaderShip
             ;
 
         public static void EXload(){
@@ -99,6 +99,18 @@ public class EXStatusEffects {
                 init(() -> {
                     opposite(scabbed);
                 });
+            }};
+            leaderShip = new StatusEffectStack("leader-ship")
+            {{
+                localizedName = "Leader Ship";
+                description = "Commanded by a Commanding unit capable of stopping anything in their tracks boosts the functionality of any unit near it.";
+                speedMultiplier = 1.01f;
+                reloadMultiplier = 1.01f;
+                buildSpeedMultiplier = 1.01f;
+                healthMultiplier = 1.01f;
+                damage = -0.1f/60f;
+                charges = 20;
+                staticStat();
             }};
         }
 }

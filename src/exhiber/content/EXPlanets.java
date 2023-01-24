@@ -21,6 +21,8 @@ import mindustry.world.*;
 import mindustry.world.meta.*;
 import exhiber.ExhiberMain;
 
+import static mindustry.Vars.content;
+
 public class EXPlanets extends Planets {
     public static Planet
         exhiber
@@ -44,7 +46,7 @@ public class EXPlanets extends Planets {
                 atmosphereRadOut = 0.5f;
                 landCloudColor = Color.valueOf("ffffff");
                 bloom = true;
-                hiddenItems.addAll(Item.getAllOres()).removeAll(EXItems.exhiberItems);
+                hiddenItems.addAll(content.items()).removeAll(EXItems.exhiberItems);
 
             }};
 

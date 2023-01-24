@@ -50,27 +50,27 @@ public class StatusEffectStack extends StatusEffect {
     public void setStats(){
         if(statsStatic.get(0) != 1) {
             stats.addPercent(Stat.damageMultiplier, statsStatic.get(0));
-            if (charges != 1)stats.addPercent(EXStats.maxDamageMultiplier, 1+(statsStatic.get(0)-1)*charges);
+            if (charges != 1)stats.addPercent(EXStats.maxDamageMultiplier, Mathf.ceil(100*(1+(statsStatic.get(0)-1)*charges))/100f);
         }
         if(statsStatic.get(1) != 1) {
             stats.addPercent(Stat.healthMultiplier, statsStatic.get(1));
-            if (charges != 1)stats.addPercent(EXStats.maxHealthMultiplier, 1+(statsStatic.get(1)-1)*charges);
+            if (charges != 1)stats.addPercent(EXStats.maxHealthMultiplier, Mathf.ceil(100*(1+(statsStatic.get(1)-1)*charges))/100f);
         }
         if(statsStatic.get(2) != 1) {
             stats.addPercent(Stat.speedMultiplier, statsStatic.get(2));
-            if (charges != 1)stats.addPercent(EXStats.maxSpeedMultiplier, 1+(statsStatic.get(2)-1)*charges);
+            if (charges != 1)stats.addPercent(EXStats.maxSpeedMultiplier, Mathf.ceil(100*(1+(statsStatic.get(2)-1)*charges))/100f);
         }
         if(statsStatic.get(3) != 1) {
             stats.addPercent(Stat.reloadMultiplier, statsStatic.get(3));
-            if (charges != 1)stats.addPercent(EXStats.maxReloadSpeedMultiplier, 1+(statsStatic.get(3)-1)*charges);
+            if (charges != 1)stats.addPercent(EXStats.maxReloadSpeedMultiplier, Mathf.ceil(100*(1+(statsStatic.get(3)-1)*charges))/100f);
         }
         if(statsStatic.get(4) != 1) {
             stats.addPercent(Stat.buildSpeedMultiplier, statsStatic.get(4));
-            if (charges != 1)stats.addPercent(EXStats.maxBuildSpeedMultiplier, 1+(statsStatic.get(4)-1)*charges);
+            if (charges != 1)stats.addPercent(EXStats.maxBuildSpeedMultiplier, Mathf.ceil(100*(1+(statsStatic.get(4)-1)*charges))/100f);
         }
         if(statsStatic.get(4) != 1) {
             stats.addPercent(EXStats.dragMultiplier, statsStatic.get(5));
-            if (charges != 1)stats.addPercent(EXStats.maxDragMultiplier, 1+(statsStatic.get(5)-1)*charges);
+            if (charges != 1)stats.addPercent(EXStats.maxDragMultiplier, Mathf.ceil(100*(1+(statsStatic.get(5)-1)*charges))/100f);
         }
 
         if(damage > 0) {

@@ -1,6 +1,7 @@
 package exhiber.content;
 
 import arc.graphics.*;
+import arc.math.Mathf;
 import arc.struct.*;
 import exhiber.entities.EnemyStatusFieldAbility;
 import exhiber.world.abilitys.FixedRegenAbility;
@@ -27,7 +28,7 @@ public class EXUnits{
 
     /*Missile's*/titaniaMissile,
     /*Stealth Path*/sentry,sentryUp,stalker,heatseeker,
-    /*Rampage Path*/loner,lonerUp,rouge,rougeUp,revenger,
+    /*Rampage Path*/loner,lonerUp,rouge,rougeUp,revenger,warbringer,
     /*Protector Path*/bonfire,bonfireUp,campfire,campfireUp,barrack,
     /*Freezing Path*/polar,polarUp,brainFreeze,frostBite,
     /*Kaon Path (Lava Path)*/cheron,
@@ -261,7 +262,7 @@ public class EXUnits{
             health = 5100;
             armor = 8;
             speed = 1f / 7.5f;
-            legCount = 8;
+            legCount = 6;
             legLength = 2.4f * 8f;
             hitSize = 16;
             range = 34 * 8;
@@ -420,6 +421,100 @@ public class EXUnits{
                     trailLength = 5;
                 }};
             }});
+        }};
+        warbringer = new UnitType("warbringer")
+        {{
+            localizedName = "warbringer";
+            constructor = EntityMapping.map("corvus");
+            health = 184000;
+            armor = 26;
+            speed = 1.3f/7.5f;
+            hitSize = 80;
+            legCount = 4;
+            legForwardScl = 0.5f;
+            rotateSpeed = 1;
+            legLength = 40;
+            abilities.add(new ForceFieldAbility(8*20,20,6000,1800));
+            weapons.add(new Weapon(name("warbringer-cannon")){{
+                            x = 0;
+                            y = 0;
+                            layerOffset -= 0.02;
+                            shootSound = Sounds.mediumCannon;
+                            targetAir = false;
+                            shake = 4f;
+                            recoil = 20f;
+                            reload = 60f * 2.3f;
+                            shootY = 40f;
+                            minWarmup = 0.85f;
+                            shootWarmupSpeed = 0.07f;
+                            mirror = false;
+                            top = true;
+                            bullet = new ArtilleryBulletType(2.5f, 350, "shell"){{
+                                hitEffect = new MultiEffect(Fx.titanExplosion, Fx.titanSmoke);
+                                despawnEffect = Fx.none;
+                                knockback = 2f;
+                                lifetime = 140f;
+                                height = 19f;
+                                width = 17f;
+                                splashDamageRadius = 65f;
+                                splashDamage = 2850f;
+                                scaledSplashDamage = true;
+                                backColor = hitColor = trailColor = Color.valueOf("ea8878").lerp(Pal.redLight, 0.5f);
+                                frontColor = Color.white;
+                                ammoMultiplier = 1f;
+                                hitSound = Sounds.titanExplosion;
+
+                                status = StatusEffects.burning;
+                                statusDuration = 240;
+
+                                trailLength = 32;
+                                trailWidth = 3.35f;
+                                trailSinScl = 2.5f;
+                                trailSinMag = 0.5f;
+                                trailEffect = Fx.none;
+                                despawnShake = 7f;
+
+                                shootEffect = Fx.shootTitan;
+                                smokeEffect = Fx.shootSmokeTitan;
+
+                                trailInterp = v -> Math.max(Mathf.slope(v), 0.8f);
+                                shrinkX = 0.2f;
+                                shrinkY = 0.1f;
+                                buildingDamageMultiplier = 0.3f;
+                            }};
+                        }},
+                    new Weapon(name("warbringer-turret"))
+                    {{
+                        reload = 9f;
+                        range = 220f;
+                        targetGround = false;
+                        controllable = false;
+                        autoTarget = true;
+                        rotate = true;
+                        x = 10;
+                        y = 0;
+                        rotateSpeed = 4;
+                        shoot.shotDelay = 5f;
+                        shoot.shots = 2;
+
+                        recoil = 2f;
+                        inaccuracy = 17f;
+                        shootCone = 35f;
+
+                        shootSound = Sounds.shootSnap;
+                        bullet = new FlakBulletType(4f, 12){{
+                            lifetime = 60f;
+                            ammoMultiplier = 5f;
+                            shootEffect = Fx.shootSmall;
+                            reloadMultiplier = 0.5f;
+                            width = 6f;
+                            height = 8f;
+                            hitEffect = Fx.flakExplosion;
+                            splashDamage = 22f * 1.5f;
+                            splashDamageRadius = 24f;
+                        }};
+                    }}
+            );
         }};
         sentry = new UnitType("sentry") {{
             localizedName = "Sentry";
@@ -740,7 +835,7 @@ public class EXUnits{
         brainFreeze = new UnitType("brainFreeze") {{
             health = 2200;
             constructor = EntityMapping.map("fortress");
-            localizedName = "Brain Freeze";
+            localizedName = "Brainfreeze";
             armor = 8;
             speed = 2.2f / 7.5f;
             hitSize = 20;
@@ -929,7 +1024,7 @@ public class EXUnits{
             }});
         }};
         bonfireUp = new UnitType("bonfire-up") {{
-            localizedName = "Hover";
+            localizedName = "Hovel";
             description = "Guardian V0.1";
             constructor = EntityMapping.map("cleroi");
             abilities.add(
@@ -1000,6 +1095,7 @@ public class EXUnits{
             speed = 1f / 7.5f;
             legCount = 4;
             legLength = 15f;
+            range = 20*8f;
             legGroupSize = 4;
             weapons.add(new Weapon(name("")){{
                 x = 0;
@@ -1022,17 +1118,20 @@ public class EXUnits{
                     fragVelocityMin = fragVelocityMax = 1;
                     fragSpread = 30;
                     fragBullets = 12;
+                    homingPower = 0.02f;
+                    pierceCap = 2;
                     fragBullet = new LaserBoltBulletType(8,5)
                     {{
                         lifetime = setRange(14,this.speed);
                         trailWidth = 2;
                         trailLength = 15;
-                        homingPower = 0.04f;
+                        homingPower = 0.08f;
                         trailColor = backColor = lightColor = Pal.heal;
                         despawnShake = hitShake = 0.2f;
                         ejectEffect = Fx.greenCloud;
                         smokeEffect = Fx.greenCloud;
                         knockback = -2;
+                        pierceCap = 2;
                     }};
                     despawnEffect = hitEffect = Fx.greenLaserCharge;
                 }};
@@ -1086,10 +1185,11 @@ public class EXUnits{
         }};
         campfireUp = new UnitType("campfire-up")
         {{
-            localizedName = "Paladin";
+            localizedName = "Commander";
             constructor = EntityMapping.map("arkyid");
             abilities.add(new SpawnDeathAbility(loner,1,0));
-            abilities.add(new FixedRegenAbility(40,0));
+            abilities.add(new FixedRegenAbility(40f/60f,0));
+            abilities.add(new StatusFieldAbility(EXStatusEffects.leaderShip,240,120,8*8));
             immunities.add(EXStatusEffects.scabbed);
             hitSize = 2.4f*8f;
             legLength = 2.4f*8f;
@@ -1181,8 +1281,6 @@ public class EXUnits{
                 new Weapon(name("barrack-terror")) {{
                     x = 10;
                     y = -10;
-                    controllable = false;
-                    autoTarget = true;
                     mirror = true;
                     top = true;
                     rotate = true;
@@ -1208,8 +1306,6 @@ public class EXUnits{
                         new Weapon(name("barrack-terror")) {{
                             x = 10;
                             y = 10;
-                            controllable = false;
-                            autoTarget = true;
                             mirror = true;
                             top = true;
                             rotate = true;
