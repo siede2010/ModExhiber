@@ -20,7 +20,7 @@ public class EXItems{
             }};
             vanadium = new Item("vanadium"){{
                 localizedName = "Vanadium";
-                hardness = 4;
+                hardness = 5;
                 color = Color.valueOf("ef525b");
                 radioactivity = 0.5f;
                 charge = 0.3f;
@@ -40,19 +40,19 @@ public class EXItems{
             }};
             rawClay = new Item("raw-clay"){{
                localizedName = "Raw Clay";
-               hardness = 4;
+               hardness = 5;
                 color = Color.valueOf("b8705c");
             }};
             brass = new Item("brass"){{
                 localizedName = "Brass";
                 charge = 0.3f;
-                hardness = 5;
+                hardness = 3;
                 color = Color.valueOf("d1bd64");
             }};
             diamond = new Item("diamond"){{
                 localizedName = "Diamond";
                 explosiveness = 0.1f;
-                hardness = 3;
+                hardness = 4;
                 color = Color.valueOf("8fcaf2");
             }};
             quartz = new Item("quartz"){{

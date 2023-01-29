@@ -1,9 +1,14 @@
 package exhiber.content;
 
 import arc.graphics.Color;
+import arc.graphics.g2d.Fill;
+import arc.graphics.g2d.Lines;
+import arc.math.Angles;
 import arc.math.Mathf;
 import arc.struct.EnumSet;
 import arc.struct.Seq;
+import exhiber.world.Icon;
+import exhiber.world.SquareBaseShiled;
 import exhiber.world.block.*;
 import exhiber.world.block.crafter.MultiLiquifier;
 import exhiber.world.block.crafter.WeatherCrafter;
@@ -17,6 +22,7 @@ import exhiber.world.block.logic.ExhiberLogicBlock;
 import exhiber.world.block.unit.RepairFactory;
 import exhiber.world.block.unit.SelectiveConstructor;
 import mindustry.content.*;
+import mindustry.entities.Effect;
 import mindustry.entities.bullet.*;
 import mindustry.entities.effect.ExplosionEffect;
 import mindustry.entities.part.DrawPart;
@@ -25,35 +31,29 @@ import mindustry.entities.pattern.ShootAlternate;
 import mindustry.entities.pattern.ShootBarrel;
 import mindustry.entities.pattern.ShootPattern;
 import mindustry.entities.pattern.ShootSpread;
+import mindustry.gen.Sounds;
 import mindustry.graphics.CacheLayer;
+import mindustry.graphics.Drawf;
 import mindustry.graphics.Layer;
 import mindustry.graphics.Pal;
 import mindustry.type.*;
 import mindustry.type.unit.MissileUnitType;
 import mindustry.world.Block;
-import mindustry.world.blocks.defense.MendProjector;
-import mindustry.world.blocks.defense.Wall;
+import mindustry.world.blocks.defense.*;
 import mindustry.world.blocks.defense.turrets.*;
-import mindustry.world.blocks.distribution.Conveyor;
-import mindustry.world.blocks.distribution.Junction;
-import mindustry.world.blocks.distribution.Router;
+import mindustry.world.blocks.distribution.*;
 import mindustry.world.blocks.environment.*;
 import mindustry.world.blocks.liquid.Conduit;
-import mindustry.world.blocks.logic.LogicBlock;
 import mindustry.world.blocks.payloads.PayloadConveyor;
 import mindustry.world.blocks.power.*;
-import mindustry.world.blocks.production.AttributeCrafter;
-import mindustry.world.blocks.production.Drill;
-import mindustry.world.blocks.production.GenericCrafter;
-import mindustry.world.blocks.production.WallCrafter;
-import mindustry.world.blocks.storage.CoreBlock;
-import mindustry.world.blocks.storage.StorageBlock;
-import mindustry.world.blocks.units.UnitAssembler;
-import mindustry.world.blocks.units.UnitAssemblerModule;
+import mindustry.world.blocks.production.*;
+import mindustry.world.blocks.storage.*;
+import mindustry.world.blocks.units.*;
 import mindustry.world.draw.*;
-import mindustry.world.meta.Attribute;
-import mindustry.world.meta.BlockFlag;
+import mindustry.world.meta.*;
 
+import static arc.graphics.g2d.Draw.color;
+import static arc.graphics.g2d.Lines.stroke;
 import static mindustry.type.ItemStack.with;
 
 public class EXBlocks{
@@ -63,10 +63,10 @@ public class EXBlocks{
             ClaySolidWall,marmatiteFloor,marmatiteWall,patroniteFloor,patroniteWall,
             zincNitrateFloor,zincNitrateWall,chalkClogs,marmatiteRocks,
             vanadiumFloor,vantraxPlating1,vantraxPlating2,vantraxPlating3,vantraxPlating4,
-            metalFloorB,metalFloorH,metalFloorP,
+            metalFloorB,metalFloorH,metalFloorP,corePlate,
             /*Ore's*/clayOre,diamondOre,radiumOre,vanadiumOre,zincOre,copperOre,
             //Effects
-            /*Cores*/corePad,coreVessel,
+            /*Cores*/corePad,coreVessel,coreHeaven,
 
             vanadiumMender,isolatorVault,
             //Liquids
@@ -84,7 +84,7 @@ public class EXBlocks{
             tunnelExtractor,superfluxForge,diamondCompressor,
             //Turrets
             swift,dispel,reflect,tensor,flow,scourge,effervescence,descent,
-            polish,conflict,bind,drumicade,sinusoidal,pitchfork,relegation,smithery,
+            polish,conflict,bind,drumicade,sinusoidal,overfreight,pitchfork,relegation,smithery,
             //Modules
             moduleMK1,moduleMK2,electricModuleEM1,
             //Units
@@ -93,7 +93,10 @@ public class EXBlocks{
             brassWall,brassWallLarge,vanadiumWall,vanadiumWallLarge,clayWall,clayWallLarge,
 
             //Logics
-            heatProcessor
+            heatProcessor,
+
+            //Sandbox
+            worldBarrier,siegeProducer
             ;
 
         public static void EXload() {
@@ -282,6 +285,13 @@ public class EXBlocks{
                 status = EXStatusEffects.antiScabbed;
                 statusDuration = 120f;
             }};
+            corePlate = new Floor("core-plate",0)
+            {{
+                allowCorePlacement = true;
+                localizedName = "Core Plate";
+                status = EXStatusEffects.antiScabbed;
+                statusDuration = 120f;
+            }};
             nitrogenPool = new Floor("nitrogen-pool",0){{
                 attributes.set(EXAttributes.watermill,1f/4f);
                 localizedName = "Nitrogen Pool";
@@ -361,6 +371,17 @@ public class EXBlocks{
                 unitType = EXUnits.cadet;
                 alwaysUnlocked = true;
                 unitCapModifier = 9;
+                envEnabled = 5;
+            }};
+            coreHeaven = new CoreBlock("core-heaven"){{
+                requirements(Category.effect, BuildVisibility.sandboxOnly,with(EXItems.zinc,200,EXItems.diamond,100,EXItems.tenorite,20));
+                localizedName = "Core: Heaven";
+                size = 2;
+                health = 10000000;
+                itemCapacity = 1000000;
+                alwaysUnlocked = true;
+                unitCapModifier = 99;
+                unitType = EXUnits.seraphim;
                 envEnabled = 5;
             }};
             chalkScraper = new Drill("chalk-scraper"){{
@@ -587,7 +608,7 @@ public class EXBlocks{
                 shootCone = 10;
                 range = 19*8;
                 ammo(
-                        EXItems.chalk,new BasicBulletType(2,25){{
+                        EXItems.chalk,new BasicBulletType(2,20){{
                             reloadMultiplier = 1.5f;
                             lifetime = 60f;
                             ammoMultiplier = 4;
@@ -596,7 +617,7 @@ public class EXBlocks{
                             trailChance = 100;
                             trailInterval = 0;
                         }},
-                        EXItems.diamond,new BasicBulletType(2,30){{
+                        EXItems.diamond,new BasicBulletType(2,26){{
                             reloadMultiplier = 1.3f;
                             lifetime = 60f;
                             ammoMultiplier = 4;
@@ -605,7 +626,7 @@ public class EXBlocks{
                             trailChance = 100;
                             trailInterval = 0;
                         }},
-                        EXItems.quartz,new BasicBulletType(2,50){{
+                        EXItems.quartz,new BasicBulletType(2,34){{
                             lifetime = 60f;
                             ammoMultiplier = 4;
                             weaveScale = 3;
@@ -1060,43 +1081,146 @@ public class EXBlocks{
                         }}
                 );
             }};
-            sinusoidal = new LiquidTurret("sinusoidal"){{
-                requirements(Category.turret,with(EXItems.zinc,500));
+            sinusoidal = new ItemTurret("sinusoidal"){{
+                requirements(Category.turret,with(EXItems.zinc,200,EXItems.vanadium,70,EXItems.brass,80,EXItems.fiberGlass,10));
                 localizedName = "Sinusoidal";
                 size = 3;
-                recoil = 0f;
-                reload = 3f;
-                inaccuracy = 5f;
-                shootCone = 50f;
+                recoil = 4f;
+                reload = 60f/0.8f;
+                inaccuracy = 1f;
                 liquidCapacity = 10f;
                 shootEffect = Fx.shootLiquid;
+                shoot = new ShootSpread(12,7.5f);
                 health = 2300;
-                range = 110f;
                 flags = EnumSet.of(BlockFlag.turret, BlockFlag.extinguisher);
+                range = 140;
                 ammo(
-                        Liquids.nitrogen,new LiquidBulletType(Liquids.nitrogen){{
-                            damage = 16;
-                            status = StatusEffects.freezing;
-                            statusDuration = 240f;
-                            knockback = 0.02f;
-                            rangeChange = -64;
-                            drag = -0.2f;
-                            layer = Layer.bullet - 2f;
+                        EXItems.chalk,new BasicBulletType(2,20){{
+                            reloadMultiplier = 1.5f;
+                            lifetime = 60f;
+                            ammoMultiplier = 4;
+                            weaveRandom = false;
+                            weaveScale = 3;
+                            weaveMag = 3;
+                            trailWidth = 2;
+                            trailLength = 20;
                         }},
-                        EXLiquids.ammonia,new LiquidBulletType(EXLiquids.ammonia){{
-                            damage = 4;
-                            status = EXStatusEffects.scabbed;
-                            statusDuration = 120f;
-                            knockback =- 0.02f;
-                            drag = 0.01f;
-                            layer = Layer.bullet - 2f;
+                        EXItems.diamond,new BasicBulletType(2,26){{
+                            reloadMultiplier = 1.5f;
+                            lifetime = 60f;
+                            ammoMultiplier = 4;
+                            weaveRandom = false;
+                            weaveScale = 3;
+                            weaveMag = 3;
+                            trailWidth = 2;
+                            trailLength = 20;
+                        }},
+                        EXItems.quartz,new BasicBulletType(2,34){{
+                            reloadMultiplier = 1.5f;
+                            lifetime = 60f;
+                            ammoMultiplier = 4;
+                            weaveRandom = false;
+                            weaveScale = 3;
+                            weaveMag = 3;
+                            trailWidth = 2;
+                            trailLength = 20;
                         }}
                 );
+                drawer = new DrawTurret(name("gas"));
+            }};
+            overfreight = new ItemTurret("overfreight")
+            {{
+                requirements(Category.turret,with(EXItems.tenorite,150,EXItems.quartz,40,EXItems.radium,40));
+                localizedName = "Overfreight";
+                size = 3;
+                reload = 180;
+                range = 8*32;
+                targetAir = false;
+                consumePower(100f/60f);
+                ammo(
+                        EXItems.radium,new EmpBulletType(){{
+                            float rad = 100f;
+
+                            scaleLife = true;
+                            lightOpacity = 0.7f;
+                            unitDamageScl = 0.8f;
+                            healPercent = 20f;
+                            //timeIncrease = 3f;
+                            timeIncrease = 0;
+                            //timeDuration = 60f * 20f;
+                            timeDuration = 0;
+                            powerDamageScl = 3f;
+                            damage = 120;
+                            hitColor = lightColor = Pal.heal;
+                            lightRadius = 70f;
+                            clipSize = 250f;
+                            shootEffect = Fx.hitEmpSpark;
+                            smokeEffect = Fx.shootBigSmoke2;
+                            lifetime = 60f;
+                            sprite = "circle-bullet";
+                            backColor = Pal.heal;
+                            frontColor = Color.white;
+                            width = height = 12f;
+                            shrinkY = 0f;
+                            speed = 5f;
+                            trailLength = 20;
+                            trailWidth = 6f;
+                            trailColor = Pal.heal;
+                            trailInterval = 3f;
+                            splashDamage = 120f;
+                            splashDamageRadius = rad;
+                            hitShake = 4f;
+                            trailRotation = true;
+                            status = StatusEffects.electrified;
+                            hitSound = Sounds.plasmaboom;
+                            collidesAir = false;
+
+                            trailEffect = new Effect(16f, e -> {
+                                color(Pal.heal);
+                                for(int s : Mathf.signs){
+                                    Drawf.tri(e.x, e.y, 4f, 30f * e.fslope(), e.rotation + 90f*s);
+                                }
+                            });
+
+                            hitEffect = new Effect(50f, 100f, e -> {
+                                e.scaled(7f, b -> {
+                                    color(Pal.heal, b.fout());
+                                    Fill.circle(e.x, e.y, rad);
+                                });
+
+                                color(Pal.heal);
+                                stroke(e.fout() * 3f);
+                                Lines.circle(e.x, e.y, rad);
+
+                                int points = 10;
+                                float offset = Mathf.randomSeed(e.id, 360f);
+                                for(int i = 0; i < points; i++){
+                                    float angle = i* 360f / points + offset;
+                                    //for(int s : Mathf.zeroOne){
+                                    Drawf.tri(e.x + Angles.trnsx(angle, rad), e.y + Angles.trnsy(angle, rad), 6f, 50f * e.fout(), angle/* + s*180f*/);
+                                    //}
+                                }
+
+                                Fill.circle(e.x, e.y, 12f * e.fout());
+                                color();
+                                Fill.circle(e.x, e.y, 6f * e.fout());
+                                Drawf.light(e.x, e.y, rad * 1.6f, Pal.heal, e.fout());
+                            });
+                        }}
+                );
+                drawer = new DrawTurret(name("gas"));
+            }};
+            pitchfork = new ItemTurret("pitchfork")
+            {{
+                //requirements(Category.production,with(EXItems.zinc,1));
+                localizedName = "Pitchfork";
+                size = 3;
+                drawer = new DrawTurret(name("gas"));
             }};
             turboDrill = new Drill("turbo-drill"){{
                 requirements(Category.production,with(EXItems.zinc,30,EXItems.chalk,10));
                 localizedName = "Turbo Drill";
-                tier = 3;
+                tier = 4;
                 size = 2;
                 drillTime = 300;
                 liquidBoostIntensity = 1;
@@ -1289,7 +1413,7 @@ public class EXBlocks{
                         new AssemblerUnitPlan(EXUnits.campfire,60f*30f,PayloadStack.list(vanadiumWallLarge,2,EXUnits.loner,1,EXUnits.bonfire,1,EXUnits.polar,1))
                 );
             }};
-            moduleAssemblerLarge = new SelectiveConstructor("large-module-assembler",new Block[] {moduleMK2,clayWallLarge,brassWallLarge,vanadiumWallLarge,flow,scourge}){{
+            moduleAssemblerLarge = new SelectiveConstructor("large-module-assembler",new Block[] {moduleMK2,clayWallLarge,brassWallLarge,vanadiumWallLarge,flow,scourge,effervescence}){{
                 requirements(Category.units,with(EXItems.zinc,1200,EXItems.vanadium,200,EXItems.fiberGlass,200));
                 localizedName = "Large Module Assembler";
                 maxBlockSize = 3;
@@ -1423,6 +1547,33 @@ public class EXBlocks{
             /*
             Extra Down Here
             */
+
+            loadSandbox();
+        }
+        public static void loadSandbox()
+        {
+            worldBarrier = new SquareBaseShiled("world-barrier")
+            {{
+                requirements(Category.effect,BuildVisibility.sandboxOnly,with());
+                localizedName = "World Barrier";
+                consumePower(1f/60f);
+                health = 1000;
+                armor = 10;
+                radius = 8*2.5f;
+                forceDark = true;
+                sizes = new Seq<Icon>().addAll(EXIcons.one,EXIcons.two,EXIcons.three,EXIcons.four,EXIcons.five);
+            }};
+            siegeProducer = new UnitFactory("siege-producer")
+            {{
+                requirements(Category.units,BuildVisibility.sandboxOnly, with(Items.copper, 60, Items.lead, 70));
+                plans = Seq.with(
+                        new UnitPlan(EXUnits.probe, 60f * 45, with(EXItems.zinc,20,EXItems.tenorite,10)),
+                        new UnitPlan(EXUnits.voyager, 60f * 60, with(EXItems.brass,35,EXItems.vanadium,10)),
+                        new UnitPlan(EXUnits.satellite, 60f * 90, with(EXItems.brass,50,EXItems.fiberGlass,10))
+                );
+                size = 3;
+                consumePower(1f/60f);
+            }};
         }
     public static float setRange(float range,float speed)
     {
