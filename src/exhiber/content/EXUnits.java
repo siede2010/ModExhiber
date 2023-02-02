@@ -52,6 +52,7 @@ public class EXUnits{
         loadFrozen();
         loadProtective();
         loadKaon();
+        loadCoreUnits();
         loadSandbox();
         loadExtra();
     }
@@ -559,6 +560,7 @@ public class EXUnits{
             legForwardScl = 0.5f;
             rotateSpeed = 1;
             legLength = 40;
+            faceTarget = true;
             abilities.add(new ForceFieldAbility(8*20,20,6000,1800));
             weapons.add(new Weapon(name("warbringer-cannon")){{
                             x = 0;

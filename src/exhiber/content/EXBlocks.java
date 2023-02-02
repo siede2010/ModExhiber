@@ -373,17 +373,6 @@ public class EXBlocks{
                 unitCapModifier = 9;
                 envEnabled = 5;
             }};
-            coreHeaven = new CoreBlock("core-heaven"){{
-                requirements(Category.effect, BuildVisibility.sandboxOnly,with(EXItems.zinc,200,EXItems.diamond,100,EXItems.tenorite,20));
-                localizedName = "Core: Heaven";
-                size = 2;
-                health = 10000000;
-                itemCapacity = 1000000;
-                alwaysUnlocked = true;
-                unitCapModifier = 99;
-                unitType = EXUnits.seraphim;
-                envEnabled = 5;
-            }};
             chalkScraper = new Drill("chalk-scraper"){{
                 requirements(Category.production,with(EXItems.zinc,20));
                localizedName = "Chalk Scraper";
@@ -1573,6 +1562,17 @@ public class EXBlocks{
                 );
                 size = 3;
                 consumePower(1f/60f);
+            }};
+            coreHeaven = new CoreBlock("core-heaven"){{
+                requirements(Category.effect, BuildVisibility.sandboxOnly,with(EXItems.zinc,200,EXItems.diamond,100,EXItems.tenorite,20));
+                localizedName = "Core: Heaven";
+                size = 2;
+                health = 10000000;
+                itemCapacity = 1000000;
+                alwaysUnlocked = true;
+                unitCapModifier = 99;
+                unitType = EXUnits.seraphim;
+                envEnabled = 5;
             }};
         }
     public static float setRange(float range,float speed)

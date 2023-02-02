@@ -9,6 +9,7 @@ import arc.scene.ui.layout.Table;
 import arc.struct.Seq;
 import arc.util.io.Reads;
 import arc.util.io.Writes;
+import exhiber.content.EXIcons;
 import exhiber.world.block.crafter.MultiLiquifier;
 import mindustry.entities.Units;
 import mindustry.gen.Bullet;
@@ -29,7 +30,12 @@ public class SquareBaseShiled extends BaseShield {
     public SquareBaseShiled(String name)
     {
         super(name);
+        sync = true;
         configurable = true;
+        clearOnDoubleTap = true;
+        saveConfig = true;
+        copyConfig = true;
+        configClear((SquareBaseShiled.SquareBaseShiledBuild tile) -> tile.iconSize = null);
         config(Icon.class, (SquareBaseShiled.SquareBaseShiledBuild entity, Icon i) -> {
             entity.iconSize = i;
         });
@@ -116,6 +122,18 @@ public class SquareBaseShiled extends BaseShield {
             }
 
             Draw.reset();
+        }
+        @Override
+        public void write(Writes write){
+            super.write(write);
+            write.str(iconSize == null?EXIcons.one.name:iconSize.name);
+        }
+
+        @Override
+        public void read(Reads read, byte revision){
+            super.read(read, revision);
+            String se = read.str();
+            iconSize = sizes.find((Icon c) -> c.name.equals(se));
         }
     }
 }
