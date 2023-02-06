@@ -2,15 +2,19 @@ package exhiber.content;
 
 import arc.Core;
 import arc.graphics.Color;
+import exhiber.entities.EnemyStatusFieldAbility;
+import exhiber.world.statusEffect.ComponentEffect;
 import exhiber.world.statusEffect.StatusEffectStack;
 import mindustry.content.StatusEffects;
 import mindustry.entities.Effect;
+import mindustry.entities.abilities.ForceFieldAbility;
 import mindustry.type.StatusEffect;
 
 public class EXStatusEffects {
     public static StatusEffect
         scabbed,detained,ballistic,protectivePlating,advancedPlating,crunched,infrafluxed
-            , slowing , polishHit,cheronHit,antiScabbed,leaderShip
+            , slowing , polishHit,cheronHit,antiScabbed,leaderShip,
+            componentShield,componentFreeze,componentBrute,componentSpeed
             ;
 
         public static void EXload(){
@@ -111,6 +115,36 @@ public class EXStatusEffects {
                 damage = -0.1f/60f;
                 charges = 20;
                 staticStat();
+            }};
+            componentShield = new ComponentEffect("component-shield")
+            {{
+                localizedName = "Component: Shield";
+                description = ("an addon to any unit that gives it a small and compact shield");
+                abilities.add(new ForceFieldAbility(8*3,5f/60f,100,10*60));
+            }};
+            componentFreeze = new ComponentEffect("component-freeze")
+            {{
+                localizedName = "Component: Freeze";
+                description = ("an addon to any unit that freezes nearby enemy units and gives the unit host extra armor");
+                healthMultiplier = 2f;
+                speedMultiplier = 0.8f;
+                reloadMultiplier = 0.8f;
+                abilities.add(new EnemyStatusFieldAbility(StatusEffects.freezing,180,120,8*12));
+            }};
+            componentBrute = new ComponentEffect("component-brute")
+            {{
+                localizedName = "Component: Brute";
+                description = ("an addon to any unit that sharpens their armor and weapons but makes them more vulnerable.");
+                damageMultiplier = 1.5f;
+                healthMultiplier = 0.8f;
+            }};
+            componentSpeed = new ComponentEffect("component-speed")
+            {{
+                localizedName = "Component: Speed";
+                description = ("an addon to any unit that prioritizes speed than making shure less damage is taken. harder time slowing down due to this.");
+                speedMultiplier = 1.4f;
+                healthMultiplier = 0.8f;
+                dragMultiplier = 0.5f;
             }};
         }
 }

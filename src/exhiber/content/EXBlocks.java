@@ -562,7 +562,7 @@ public class EXBlocks{
                 );
                 drawer = new DrawTurret(name("gas"));
             }};
-            reflect = new PowerTurret("reflect"){{
+            reflect = new ContinuousTurret("reflect"){{
                 requirements(Category.turret,with(EXItems.zinc,16,EXItems.quartz,8,EXItems.diamond,12));
                 localizedName = "Reflect";
                 range = 110;
