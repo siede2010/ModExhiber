@@ -64,6 +64,7 @@ public class EXBlocks{
             zincNitrateFloor,zincNitrateWall,chalkClogs,marmatiteRocks,
             vanadiumFloor,vantraxPlating1,vantraxPlating2,vantraxPlating3,vantraxPlating4,
             metalFloorB,metalFloorH,metalFloorP,corePlate,
+            bauxiteFloor,bauxiteWall,feldsparFloor,feldsparWall,graniteFloor,graniteRocks,graniteWall,
             /*Ore's*/clayOre,diamondOre,radiumOre,vanadiumOre,zincOre,copperOre,
             //Effects
             /*Cores*/corePad,coreVessel,coreHeaven,
@@ -292,6 +293,15 @@ public class EXBlocks{
                 status = EXStatusEffects.antiScabbed;
                 statusDuration = 120f;
             }};
+
+            bauxiteFloor = new Floor("bauxite-floor",3){{localizedName = "Bauxite Floor";}};
+            bauxiteWall = new StaticWall("bauxite-wall"){{localizedName = "Bauxite Wall";variants = 2;}};
+            feldsparFloor = new Floor("feldspar-floor",2){{localizedName = "Bauxite Wall";}};
+            feldsparWall = new StaticWall("feldspar-wall"){{localizedName = "Feldspar Wall";variants = 2;}};
+            graniteFloor = new Floor("granite-floor",3){{localizedName = "Granite Floor";}};
+            graniteRocks = new Prop("granite-rocks"){{localizedName = "Granite Rock";variants = 3;}};
+            graniteWall = new StaticWall("granite-wall"){{localizedName = "Granite Wall";variants = 2;}};
+
             nitrogenPool = new Floor("nitrogen-pool",0){{
                 attributes.set(EXAttributes.watermill,1f/4f);
                 localizedName = "Nitrogen Pool";
@@ -1479,7 +1489,7 @@ public class EXBlocks{
                 requirements(Category.distribution,with(EXItems.vanadium,200));
                 localizedName = "Small Trajectory Tower";
                 size = 3;
-                range = 17;
+                range = 25;
                 itemCapacity = 500;
                 railId = 1;
             }};
@@ -1488,7 +1498,7 @@ public class EXBlocks{
                 localizedName = "Small Trajectory Car Fabricator";
                 unitType = EXUnits.smallTrajectoryCar;
                 size = 3;
-                range = 17;
+                range = 25;
                 itemCapacity = 100;
                 consumeItems(with(EXItems.zinc,24,EXItems.rawClay,10));
                 railId = 1;
@@ -1497,7 +1507,7 @@ public class EXBlocks{
                 requirements(Category.distribution,with(EXItems.vanadium,400,EXItems.tenorite,150));
                 localizedName = "Small Trajectory Unloader";
                 size = 3;
-                range = 17;
+                range = 25;
                 itemCapacity = 400;
                 railId = 1;
             }};
@@ -1507,7 +1517,7 @@ public class EXBlocks{
                 requirements(Category.distribution,with(EXItems.vanadium,800));
                 localizedName = "Trajectory Tower";
                 size = 5;
-                range = 33;
+                range = 46;
                 itemCapacity = 1250;
                 railId = 2;
                 railSize = 2;
@@ -1517,7 +1527,7 @@ public class EXBlocks{
                 localizedName = "Trajectory Car Fabricator";
                 unitType = EXUnits.largeTrajectoryCar;
                 size = 5;
-                range = 33;
+                range = 46;
                 itemCapacity = 200;
                 consumeItems(with(EXItems.zinc,120,EXItems.rawClay,50));
                 railId = 2;
@@ -1528,7 +1538,7 @@ public class EXBlocks{
                 requirements(Category.distribution,with(EXItems.vanadium,1000,EXItems.tenorite,400));
                 localizedName = "Trajectory Unloader";
                 size = 5;
-                range = 33;
+                range = 46;
                 itemCapacity = 1000;
                 railId = 2;
                 railSize = 2;

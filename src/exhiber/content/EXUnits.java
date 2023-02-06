@@ -583,6 +583,7 @@ public class EXUnits{
                                 lifetime = 140f;
                                 height = 19f;
                                 width = 17f;
+
                                 splashDamageRadius = 65f;
                                 splashDamage = 2850f;
                                 scaledSplashDamage = true;
