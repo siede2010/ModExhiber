@@ -5,6 +5,7 @@ import arc.graphics.g2d.Fill;
 import arc.graphics.g2d.Lines;
 import arc.math.Mathf;
 import mindustry.entities.Effect;
+import mindustry.graphics.Drawf;
 import mindustry.graphics.Pal;
 
 import static arc.graphics.g2d.Draw.color;
@@ -14,7 +15,7 @@ import static arc.math.Angles.randLenVectors;
 
 public class ExEffects {
     public static Effect
-    collectRain,brassCraft,heatEffect,superfluxeffect
+    collectRain,brassCraft,heatEffect,superfluxeffect,chalkAoe
     ;
     public static void load() {
         collectRain = new Effect(12,e -> {
@@ -49,6 +50,11 @@ public class ExEffects {
                 Lines.line(e.x+ef*8,e.y-ef*8,i % 2 == 0 ? e.x-ef*2 : e.x+ef*2,i % 2 == 0 ? e.y-ef*2 : e.y+ef*2);
             for(int i = 2;i>0;i--)
                 Lines.line(e.x-ef*8,e.y-ef*8,i % 2 == 0 ? e.x+ef*2 : e.x-ef*2,i % 2 == 0 ? e.y-ef*2 : e.y+ef*2);
+        });
+        chalkAoe = new Effect(64,e -> {
+            color(Color.white);
+            Lines.stroke(e.fout());
+            Lines.circle(e.x,e.y,e.fin()*8);
         });
     }
 }

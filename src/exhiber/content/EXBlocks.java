@@ -447,26 +447,35 @@ public class EXBlocks{
                 requirements(Category.turret,with(EXItems.zinc,12,EXItems.diamond,8));
                 localizedName = "Swift";
                 range = 18*8;
-                reload = 45;
+                reload = 80;
+                shoot.shots = 2;
+                shoot.shotDelay = 10f;
                 health = 320;
                 ammo(
-                        EXItems.chalk, new BasicBulletType(2,18){{
+                        EXItems.chalk, new BasicBulletType(4,18){{
                             reloadMultiplier = 1.5f;
-                            lifetime = 60f;
+                            lifetime = setRange(18,4);
                             ammoMultiplier = 4;
                             weaveScale = 3;
                             weaveMag = 3;
-                            trailChance = 100;
-                            trailInterval = 0;
+                            trailWidth = 2;
+                            trailLength = 10;
+                            trailColor = backColor = lightColor = Color.white;
+                            hitEffect = despawnEffect = ExEffects.chalkAoe;
+                            splashDamage = 14;
+                            splashDamageRadius = 8;
                         }},
                         EXItems.diamond, new BasicBulletType(4,45){{
-                            lifetime = 30;
+                            lifetime = setRange(18,4);
                             reloadMultiplier = 1.2f;
                             ammoMultiplier = 2;
                             weaveScale = 4;
                             weaveMag = 4;
-                            trailChance = 100;
-                            trailInterval = 0;
+                            trailWidth = 2;
+                            trailLength = 10;
+                            trailColor = backColor = lightColor = Pal.lancerLaser;
+                            status = EXStatusEffects.scabbed;
+                            statusDuration = 180;
                         }}
                 );
                 drawer = new DrawTurret(name("gas"));
@@ -479,16 +488,16 @@ public class EXBlocks{
                 range = 120;
                 targetAir = false;
                 reload = 20;
-                inaccuracy = 20;
+                inaccuracy = 10;
                 ammo(
-                        EXItems.zinc, new BasicBulletType(2.6f,20){{
+                        EXItems.zinc, new BasicBulletType(2.6f,18){{
                             reloadMultiplier = 1.5f;
                             lifetime = 60f;
                             frontColor = Color.valueOf("eeeeff");
                             backColor = Color.valueOf("ddddee");
                             ammoMultiplier = 1;
-                            trailChance = 100;
-                            trailInterval = 0;
+                            trailWidth = 2;
+                            trailLength = 20;
                             trailColor = Color.valueOf("eeeeff");
                             homingPower = 0.05f;
                             intervalAngle = -180;
@@ -496,42 +505,43 @@ public class EXBlocks{
                             intervalRandomSpread = 0;
                             intervalSpread = 90;
                             bulletInterval = 10;
-                            intervalBullet = new BasicBulletType(1,20){{
+                            intervalBullet = new BasicBulletType(1,18){{
+                                backColor = lightColor = trailColor = Color.valueOf("eeeeff");
                                 lifetime = 10;
-                                trailChance = 100;
-                                trailInterval = 0;
+                                trailWidth = 1;
+                                trailLength = 20;
                             }};
                             collidesAir = false;
                         }},
-                        EXItems.tenorite, new BasicBulletType(5.2f,50){{
+                        EXItems.tenorite, new BasicBulletType(5.2f,46){{
                             reloadMultiplier = 0.5f;
                             lifetime = 30f;
                             ammoMultiplier = 2;
-                            trailChance = 100;
-                            trailInterval = 0;
+                            trailWidth = 2;
+                            trailLength = 20;
                             homingPower = 0.05f;
                             intervalAngle = -180;
                             intervalBullets = 2;
                             intervalRandomSpread = 0;
                             intervalSpread = 90;
                             bulletInterval = 5;
-                            intervalBullet = new BasicBulletType(1,35){{
+                            intervalBullet = new BasicBulletType(1,32){{
                                 lifetime = 30;
                                 drag = 0.05f;
-                                trailChance = 100;
-                                trailInterval = 0;
+                                trailWidth = 1;
+                                trailLength = 20;
                             }};
                             collidesAir = false;
                         }},
-                        EXItems.brass, new BasicBulletType(5.2f,30){{
+                        EXItems.brass, new BasicBulletType(5.2f,26){{
                             reloadMultiplier = 1.6f;
                             lifetime = 31f;
                             frontColor = Color.valueOf("ffff11");
                             backColor = Color.valueOf("eeee00");
                             ammoMultiplier = 2;
                             trailColor = Color.valueOf("eeee00");
-                            trailChance = 100;
-                            trailInterval = 0;
+                            trailWidth = 2;
+                            trailLength = 20;
                             homingPower = 0.05f;
                             intervalAngle = -180;
                             intervalBullets = 2;
@@ -540,11 +550,12 @@ public class EXBlocks{
                             bulletInterval = 10;
                             pierce = true;
                             pierceCap = 2;
-                            intervalBullet = new BasicBulletType(1,25){{
+                            intervalBullet = new BasicBulletType(1,24){{
+                                backColor = lightColor = trailColor = Color.valueOf("eeee00");
                                 lifetime = 60;
                                 drag = 0.1f;
-                                trailChance = 100;
-                                trailInterval = 0;
+                                trailWidth = 1;
+                                trailLength = 20;
                             }};
                             collidesAir = false;
                         }}
