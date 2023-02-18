@@ -1,10 +1,11 @@
 package exhiber.world.block.unit;
 
+import mindustry.ctype.UnlockableContent;
 import mindustry.world.Block;
 import mindustry.world.blocks.payloads.Constructor;
 
 public class SelectiveConstructor extends Constructor {
-    public Block[] bblocks;
+    public UnlockableContent[] bblocks;
     public SelectiveConstructor(String name,Block[] blocks){
         super(name);
         bblocks = blocks;

@@ -7,6 +7,7 @@ import arc.graphics.g2d.Lines;
 import arc.math.Mathf;
 import arc.scene.ui.layout.Table;
 import arc.struct.Seq;
+import arc.util.Select;
 import arc.util.io.Reads;
 import arc.util.io.Writes;
 import exhiber.content.EXIcons;
@@ -26,7 +27,7 @@ import java.util.List;
 import static mindustry.Vars.*;
 
 public class SquareBaseShiled extends BaseShield {
-    public Seq<Icon> sizes = new Seq<>();
+    public float maxSize = 5;
     public SquareBaseShiled(String name)
     {
         super(name);
@@ -35,9 +36,9 @@ public class SquareBaseShiled extends BaseShield {
         clearOnDoubleTap = true;
         saveConfig = true;
         copyConfig = true;
-        configClear((SquareBaseShiled.SquareBaseShiledBuild tile) -> tile.iconSize = null);
-        config(Icon.class, (SquareBaseShiled.SquareBaseShiledBuild entity, Icon i) -> {
-            entity.iconSize = i;
+        configClear((SquareBaseShiled.SquareBaseShiledBuild tile) -> tile.Bsize = 1);
+        config(Float.class, (SquareBaseShiled.SquareBaseShiledBuild entity, Float i) -> {
+            entity.Bsize = i;
         });
     }
 
@@ -50,12 +51,12 @@ public class SquareBaseShiled extends BaseShield {
 
     public class SquareBaseShiledBuild extends BaseShieldBuild
     {
-        public Icon iconSize;
+        public float Bsize = 1;
         @Override
         public void drawSelect(){
             this.block.drawOverlay(this.x, this.y, this.rotation);
 
-            Drawf.dashSquare( team().color,x, y, radius*(iconSize == null?1:iconSize.value)*2);
+            Drawf.dashSquare( team().color,x, y, radius*Bsize*2);
         }
         @Override
         public void updateTile(){
@@ -68,23 +69,23 @@ public class SquareBaseShiled extends BaseShield {
                 //paramEffect = absorbEffect;
                 Groups.bullet.forEach(bullet->{
                     if (team() != bullet.team())
-                        if (Math.abs(x-bullet.x) < radius*(iconSize == null?1:iconSize.value) && Math.abs(y-bullet.y) < radius*(iconSize == null?1:iconSize.value) )
+                        if (Math.abs(x-bullet.x) < radius*Bsize && Math.abs(y-bullet.y) < radius*Bsize )
                             bullet.absorb();
                 });
                 Groups.unit.forEach(unit->{
                     if (team() != unit.team())
-                        if (Math.abs(x-unit.x) < radius*(iconSize == null?1:iconSize.value)+10 && Math.abs(y-unit.y) < radius*(iconSize == null?1:iconSize.value)+10)
+                        if (Math.abs(x-unit.x) < radius*Bsize+10 && Math.abs(y-unit.y) < radius*Bsize+10)
                         {
                             if (x()-unit.x() < y()-unit.y())
                                 if (-(x()-unit.x()) < y()-unit.y())
-                                    unit.y = y-(radius*(iconSize == null?1:iconSize.value)+10); //down
+                                    unit.y = y-(radius*Bsize+10); //down
                                 else
-                                    unit.x = x+(radius*(iconSize == null?1:iconSize.value)+10); //right
+                                    unit.x = x+(radius*Bsize+10); //right
                             else
                             if (-(x()-unit.x()) < y()-unit.y())
-                                unit.x = x-(radius*(iconSize == null?1:iconSize.value)+10); //left
+                                unit.x = x-(radius*Bsize+10); //left
                             else
-                                unit.y = y+(radius*(iconSize == null?1:iconSize.value)+10); //up
+                                unit.y = y+(radius*Bsize+10); //up
 
                         }
                 });
@@ -92,18 +93,20 @@ public class SquareBaseShiled extends BaseShield {
         }
         @Override
         public void buildConfiguration(Table table){
-            ItemSelection.buildTable(SquareBaseShiled.this, table, sizes,() -> iconSize,this::configure);
+            table.add("Size:");
+            table.row();
+            table.slider(1,maxSize,0.25f,Bsize, true,this::configure);
         }
 
         @Override
         public Object config()
         {
-            return iconSize;
+            return Bsize;
         }
 
         public void drawShield(){
             if(!broken){
-                float visualRadius = (radius()-offset)*Mathf.sin(45)*0.82f*(iconSize == null?1:iconSize.value);
+                float visualRadius = (radius()-offset)*Mathf.sin(45)*0.82f*Bsize;
 
                 Draw.z(Layer.shields);
 
@@ -126,14 +129,13 @@ public class SquareBaseShiled extends BaseShield {
         @Override
         public void write(Writes write){
             super.write(write);
-            write.str(iconSize == null?EXIcons.one.name:iconSize.name);
+            write.f(Bsize);
         }
 
         @Override
         public void read(Reads read, byte revision){
             super.read(read, revision);
-            String se = read.str();
-            iconSize = sizes.find((Icon c) -> c.name.equals(se));
+            Bsize = read.f();
         }
     }
 }

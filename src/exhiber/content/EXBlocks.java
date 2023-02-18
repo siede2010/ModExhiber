@@ -19,6 +19,7 @@ import exhiber.world.block.distribution.StaticConveyor;
 import exhiber.world.block.energy.PowerCable;
 import exhiber.world.block.energy.WeatherGenerator;
 import exhiber.world.block.logic.ExhiberLogicBlock;
+import exhiber.world.block.unit.ComponentUnitFactory;
 import exhiber.world.block.unit.RepairFactory;
 import exhiber.world.block.unit.SelectiveConstructor;
 import mindustry.content.*;
@@ -89,7 +90,8 @@ public class EXBlocks{
             //Modules
             moduleMK1,moduleMK2,electricModuleEM1,
             //Units
-            moduleAssembler,moduleAssemblerLarge,payloadGutter,magnumAssembler,eliteRefabricator,switcher,freezingSwitcher,protectiveSwitcher,fiberRepairStation,
+            moduleAssembler,moduleAssemblerLarge,payloadGutter,magnumAssembler,eliteRefabricator,
+                    switcher,freezingSwitcher,protectiveSwitcher,fiberRepairStation,componentAssembler,
             //Walls
             brassWall,brassWallLarge,vanadiumWall,vanadiumWallLarge,clayWall,clayWallLarge,
 
@@ -1456,6 +1458,16 @@ public class EXBlocks{
 
                 addUpgrade(EXUnits.cadet);
             }};
+            componentAssembler = new ComponentUnitFactory("component-assembler")
+            {{
+                requirements(Category.units,with());
+                localizedName = "Component Assembler";
+                size = 3;
+                addComponent(EXStatusEffects.componentBrute,with(Items.copper,1));
+                addComponent(EXStatusEffects.componentFreeze,with(Items.copper,2));
+                addComponent(EXStatusEffects.componentShield,with(Items.copper,3));
+                addComponent(EXStatusEffects.componentSpeed,with(Items.copper,4));
+            }};
             heatProcessor = new ExhiberLogicBlock("heat-processor"){{
                 requirements(Category.logic,with(EXItems.rawClay,60,EXItems.zinc,120,EXItems.quartz,40));
                 localizedName = "Heat Processor";
@@ -1571,7 +1583,7 @@ public class EXBlocks{
                 armor = 10;
                 radius = 8*2.5f;
                 forceDark = true;
-                sizes = new Seq<Icon>().addAll(EXIcons.one,EXIcons.two,EXIcons.three,EXIcons.four,EXIcons.five);
+                maxSize = 7;
             }};
             siegeProducer = new UnitFactory("siege-producer")
             {{
