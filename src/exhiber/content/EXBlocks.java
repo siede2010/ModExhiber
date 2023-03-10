@@ -10,28 +10,20 @@ import arc.struct.Seq;
 import exhiber.world.Icon;
 import exhiber.world.SquareBaseShiled;
 import exhiber.world.block.*;
-import exhiber.world.block.crafter.MultiLiquifier;
-import exhiber.world.block.crafter.WeatherCrafter;
-import exhiber.world.block.distribution.CarCenter;
-import exhiber.world.block.distribution.CarDeposit;
-import exhiber.world.block.distribution.CarPoint;
-import exhiber.world.block.distribution.StaticConveyor;
-import exhiber.world.block.energy.PowerCable;
-import exhiber.world.block.energy.WeatherGenerator;
-import exhiber.world.block.logic.ExhiberLogicBlock;
+import exhiber.world.block.crafter.*;
+import exhiber.world.block.distribution.*;
+import exhiber.world.block.energy.*;
+import exhiber.world.block.logic.*;
+import exhiber.world.block.unit.*;
 import exhiber.world.block.unit.ComponentUnitFactory;
 import exhiber.world.block.unit.RepairFactory;
-import exhiber.world.block.unit.SelectiveConstructor;
 import mindustry.content.*;
 import mindustry.entities.Effect;
 import mindustry.entities.bullet.*;
 import mindustry.entities.effect.ExplosionEffect;
 import mindustry.entities.part.DrawPart;
 import mindustry.entities.part.RegionPart;
-import mindustry.entities.pattern.ShootAlternate;
-import mindustry.entities.pattern.ShootBarrel;
-import mindustry.entities.pattern.ShootPattern;
-import mindustry.entities.pattern.ShootSpread;
+import mindustry.entities.pattern.*;
 import mindustry.gen.Sounds;
 import mindustry.graphics.CacheLayer;
 import mindustry.graphics.Drawf;
@@ -1471,6 +1463,7 @@ public class EXBlocks{
             heatProcessor = new ExhiberLogicBlock("heat-processor"){{
                 requirements(Category.logic,with(EXItems.rawClay,60,EXItems.zinc,120,EXItems.quartz,40));
                 localizedName = "Heat Processor";
+
                 consumePower(24f/60f);
 
                 description = "Uses energy to create Heat to withstand the harsh climat of Exhiber.";
