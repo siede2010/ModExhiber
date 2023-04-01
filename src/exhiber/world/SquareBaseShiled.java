@@ -6,23 +6,12 @@ import arc.graphics.g2d.Fill;
 import arc.graphics.g2d.Lines;
 import arc.math.Mathf;
 import arc.scene.ui.layout.Table;
-import arc.struct.Seq;
-import arc.util.Select;
 import arc.util.io.Reads;
 import arc.util.io.Writes;
-import exhiber.content.EXIcons;
-import exhiber.world.block.crafter.MultiLiquifier;
-import mindustry.entities.Units;
-import mindustry.gen.Bullet;
 import mindustry.gen.Groups;
 import mindustry.graphics.Drawf;
 import mindustry.graphics.Layer;
-import mindustry.type.Item;
-import mindustry.world.blocks.ItemSelection;
 import mindustry.world.blocks.defense.BaseShield;
-
-import java.util.Arrays;
-import java.util.List;
 
 import static mindustry.Vars.*;
 

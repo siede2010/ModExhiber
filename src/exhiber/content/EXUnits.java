@@ -1,13 +1,16 @@
 package exhiber.content;
 
 import arc.graphics.*;
+import arc.graphics.g2d.Lines;
 import arc.math.Mathf;
+import arc.math.geom.Vec2;
 import arc.struct.*;
 import exhiber.entities.EnemyStatusFieldAbility;
 import exhiber.world.abilitys.FixedRegenAbility;
 import mindustry.ai.UnitCommand;
 import mindustry.ai.types.*;
 import mindustry.content.*;
+import mindustry.entities.Effect;
 import mindustry.entities.abilities.*;
 import mindustry.entities.bullet.*;
 import mindustry.entities.effect.*;
@@ -39,6 +42,7 @@ public class EXUnits{
     /*Rampage Path*/loner,lonerUp,rouge,rougeUp,revenger,warbringer,
     /*Protector Path*/bonfire,bonfireUp,campfire,campfireUp,barrack,
     /*Freezing Path*/polar,polarUp,brainFreeze,frostBite,
+    /*Siege Path*/barricade,barricadeDefense,
     /*Kaon Path (Lava Path)*/cheron,titania,
 
     /*Sandbox Path*/probe,voyager,satellite,
@@ -51,6 +55,7 @@ public class EXUnits{
         loadStealthy();
         loadFrozen();
         loadProtective();
+        loadSiege();
         loadKaon();
         loadCoreUnits();
         loadSandbox();
@@ -1004,7 +1009,7 @@ public class EXUnits{
             abilities.add(new SpawnDeathAbility(polar, 1, 11));
             abilities.add(new SpawnDeathAbility(bonfire, 1, 11));
             immunities.add(EXStatusEffects.scabbed);
-            health = 4500;
+            health = 2000;
             armor = 9;
             faceTarget = true;
             baseRotateSpeed = 10;
@@ -1014,89 +1019,71 @@ public class EXUnits{
             legLength = 15f;
             range = 20*8f;
             legGroupSize = 4;
-            weapons.add(new Weapon(name("")){{
-                x = 0;
-                y = 4;
+            weapons.add(new Weapon(name("campfire-repair")){{
+                shootSound = Sounds.bolt;
+                layerOffset = 0.0001f;
+                reload = 20f;
+                shootY = 10f;
+                recoil = 1f;
+                rotate = true;
+                rotateSpeed = 1.4f;
                 mirror = false;
-                top = false;
-                reload = 60f/0.8f;
-                bullet = new LaserBoltBulletType(4f,45)
-                {{
-                    lifetime = setRange(20,this.speed);
-                    trailWidth = 2;
-                    trailLength = 30;
-                    trailColor = backColor = lightColor = Pal.heal;
-                    despawnShake = hitShake = 1;
-                    ejectEffect = Fx.greenCloud;
-                    smokeEffect = Fx.greenCloud;
-                    knockback = -0.5f;
-                    fragRandomSpread = 0;
-                    fragLifeMin = fragLifeMax = 1;
-                    fragVelocityMin = fragVelocityMax = 1;
-                    fragSpread = 30;
-                    fragBullets = 12;
-                    homingPower = 0.02f;
-                    pierceCap = 2;
-                    fragBullet = new LaserBoltBulletType(8,5)
-                    {{
-                        lifetime = setRange(14,this.speed);
-                        trailWidth = 2;
-                        trailLength = 15;
-                        homingPower = 0.08f;
-                        trailColor = backColor = lightColor = Pal.heal;
-                        despawnShake = hitShake = 0.2f;
-                        ejectEffect = Fx.greenCloud;
-                        smokeEffect = Fx.greenCloud;
-                        knockback = -2;
-                        pierceCap = 2;
-                    }};
-                    despawnEffect = hitEffect = Fx.greenLaserCharge;
-                }};
-            }});
-            weapons.add(new RepairBeamWeapon(name("campfire-repair")) {{
-                x = 4f;
-                y = -4f;
-                shootY = 3f;
-                beamWidth = 0.8f;
-                mirror = true;
-                repairSpeed = 0.5f;
+                shootCone = 2f;
+                x = 0f;
+                y = 0f;
+                heatColor = Pal.heal;
+                cooldownTime = 30f;
 
-                bullet = new BulletType() {{
-                    maxRange = 11 * 8f;
-                }};
-            }});
-            weapons.add(new RepairBeamWeapon(name("campfire-repair")) {{
-                x = 4f;
-                y = 4f;
-                shootY = 3f;
-                beamWidth = 0.8f;
-                mirror = true;
-                repairSpeed = 0.5f;
+                shoot = new ShootAlternate(3.5f);
 
-                bullet = new BulletType() {{
-                    maxRange = 11 * 8f;
-                }};
-            }});
-            weapons.add(new Weapon() {{
-                shootOnDeath = true;
-                reload = 24f;
-                shootCone = 180f;
-                shootSound = Sounds.explosion;
-                controllable = false;
-                x = shootY = 0f;
-                mirror = false;
-                bullet = new BulletType() {{
-                    collidesTiles = false;
-                    collides = false;
-                    hitSound = Sounds.explosion;
-                    rangeOverride = 30f;
-                    speed = 0f;
-                    splashDamageRadius = 5 * 8f;
-                    instantDisappear = true;
-                    splashDamage = 300f;
-                    killShooter = true;
-                    hittable = false;
-                    collidesAir = true;
+                bullet = new RailBulletType(){{
+                    length = 20*8f;
+                    damage = 48f;
+                    hitColor = Color.valueOf("feb380");
+                    hitEffect = endEffect = Fx.hitBulletColor;
+                    pierceDamageFactor = 0.8f;
+                    healAmount = 10;
+                    collidesTeam = true;
+
+                    smokeEffect = Fx.colorSpark;
+
+                    endEffect = new Effect(14f, e -> {
+                        color(e.color);
+                        Drawf.tri(e.x, e.y, e.fout() * 1.5f, 5f, e.rotation);
+                    });
+
+                    shootEffect = new Effect(10, e -> {
+                        color(e.color);
+                        float w = 1.2f + 7 * e.fout();
+
+                        Drawf.tri(e.x, e.y, w, 30f * e.fout(), e.rotation);
+                        color(e.color);
+
+                        for(int i : Mathf.signs){
+                            Drawf.tri(e.x, e.y, w * 0.9f, 18f * e.fout(), e.rotation + i * 90f);
+                        }
+
+                        Drawf.tri(e.x, e.y, w, 4f * e.fout(), e.rotation + 180f);
+                    });
+
+                    lineEffect = new Effect(20f, e -> {
+                        if(!(e.data instanceof Vec2 v)) return;
+
+                        color(e.color);
+                        stroke(e.fout() * 0.9f + 0.6f);
+
+                        Fx.rand.setSeed(e.id);
+                        for(int i = 0; i < 7; i++){
+                            Fx.v.trns(e.rotation, Fx.rand.random(8f, v.dst(e.x, e.y) - 8f));
+                            Lines.lineAngleCenter(e.x + Fx.v.x, e.y + Fx.v.y, e.rotation + e.finpow(), e.foutpowdown() * 20f * Fx.rand.random(0.5f, 1f) + 0.3f);
+                        }
+
+                        e.scaled(14f, b -> {
+                            stroke(b.fout() * 1.5f);
+                            color(e.color);
+                            Lines.line(e.x, e.y, v.x, v.y);
+                        });
+                    });
                 }};
             }});
         }};
@@ -1758,6 +1745,74 @@ public class EXUnits{
                     }};
                 }};
             }});
+        }};
+    }
+    public static void loadSiege()
+    {
+        barricade = new UnitType("barricade")
+        {{
+            localizedName = "Barricade";
+            health = 200;
+            armor = 1;
+            flying = true;
+            drag = 0.25f;
+            speed = 7f / 7.5f;
+            engineSize = 1.25f;
+            engineOffset = 3f;
+            range = 8*56;
+            constructor = EntityMapping.map("flare");
+            trailScl = 1f;
+            trailColor = Pal.lightTrail;
+            trailLength = 30;
+            immunities = ObjectSet.with(EXStatusEffects.scabbed);
+            weapons.add(
+                    new Weapon()
+                    {{
+                        reload = 120;
+                        bullet = new BasicBulletType(0,0)
+                        {{
+                            despawnEffect = hitEffect = ejectEffect = shootEffect = Fx.none;
+                            lifetime = 0;
+                            killShooter = true;
+                        }};
+                    }}
+            );
+        }};
+        barricadeDefense = new UnitType("barricade-defense")
+        {{
+            localizedName = "Barricade - Defense Formation";
+            health = 480;
+            armor = 2;
+            flying = true;
+            drag = 0.25f;
+            speed = 0;
+            engineSize = 1.25f;
+            engineOffset = 3f;
+            constructor = EntityMapping.map("flare");
+            trailScl = 1f;
+            trailColor = Pal.lightTrail;
+            trailLength = 30;
+            range = 28*8;
+            immunities = ObjectSet.with(EXStatusEffects.scabbed);
+            barricade.abilities.add(new SpawnDeathAbility(this,1,0));
+            weapons.add(
+                    new Weapon(name("barricade-defense-top"))
+                    {{
+                        reload = 30;
+                        x = 0;
+                        y = 0;
+                        rotate = true;
+                        mirror = false;
+
+                        bullet = new BasicBulletType(6,14)
+                        {{
+                            lifetime = setRange(20,6);
+                            trailWidth = 1;
+                            trailLength = 15;
+                            trailColor = backColor = lightColor = Pal.lightFlame;
+                        }};
+                    }}
+            );
         }};
     }
     public static String name(String n){

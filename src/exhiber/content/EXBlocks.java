@@ -1106,10 +1106,11 @@ public class EXBlocks{
                 health = 2300;
                 flags = EnumSet.of(BlockFlag.turret, BlockFlag.extinguisher);
                 range = 140;
+                shootY = 1;
                 ammo(
                         EXItems.chalk,new BasicBulletType(2,20){{
                             reloadMultiplier = 1.5f;
-                            lifetime = 60f;
+                            lifetime = setRange(140f/8f,2f);
                             ammoMultiplier = 4;
                             weaveRandom = false;
                             weaveScale = 3;
@@ -1119,7 +1120,7 @@ public class EXBlocks{
                         }},
                         EXItems.diamond,new BasicBulletType(2,26){{
                             reloadMultiplier = 1.5f;
-                            lifetime = 60f;
+                            lifetime = setRange(140f/8f,2f);
                             ammoMultiplier = 4;
                             weaveRandom = false;
                             weaveScale = 3;
@@ -1129,7 +1130,7 @@ public class EXBlocks{
                         }},
                         EXItems.quartz,new BasicBulletType(2,34){{
                             reloadMultiplier = 1.5f;
-                            lifetime = 60f;
+                            lifetime = setRange(140f/8f,2f);
                             ammoMultiplier = 4;
                             weaveRandom = false;
                             weaveScale = 3;
@@ -1138,7 +1139,22 @@ public class EXBlocks{
                             trailLength = 20;
                         }}
                 );
-                drawer = new DrawTurret(name("gas"));
+                drawer = new DrawTurret(name("gas")){{
+                    parts.addAll(
+                            new RegionPart("-l"){{
+                                progress = PartProgress.warmup;
+                                moveRot = 10;
+                                moveX = -1;
+                                moveY = -1;
+                            }},
+                            new RegionPart("-r"){{
+                                progress = PartProgress.warmup;
+                                moveRot = -10;
+                                moveX = 1;
+                                moveY = -1;
+                            }}
+                    );
+                }};
             }};
             overfreight = new ItemTurret("overfreight")
             {{
