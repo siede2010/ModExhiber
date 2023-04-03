@@ -11,7 +11,6 @@ public class EXTeams {
         public static void load(){
 
             vantrax = new Team(5,"vantrax", Color.valueOf("f9fc46")){{
-
             }};
         }
 

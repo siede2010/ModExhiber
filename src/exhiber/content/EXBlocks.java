@@ -1604,10 +1604,12 @@ public class EXBlocks{
             siegeProducer = new UnitFactory("siege-producer")
             {{
                 requirements(Category.units,BuildVisibility.sandboxOnly, with(Items.copper, 60, Items.lead, 70));
+                localizedName = "Siege Production Center";
                 plans = Seq.with(
                         new UnitPlan(EXUnits.probe, 60f * 45, with(EXItems.zinc,20,EXItems.tenorite,10)),
                         new UnitPlan(EXUnits.voyager, 60f * 60, with(EXItems.brass,35,EXItems.vanadium,10)),
-                        new UnitPlan(EXUnits.satellite, 60f * 90, with(EXItems.brass,50,EXItems.fiberGlass,10))
+                        new UnitPlan(EXUnits.satellite, 60f * 90, with(EXItems.brass,50,EXItems.fiberGlass,10)),
+                        new UnitPlan(EXUnits.barricade, 60f * 90, with(EXItems.zinc,20,EXItems.tenorite,10))
                 );
                 size = 3;
                 consumePower(1f/60f);
