@@ -32,6 +32,7 @@ public class ComponentUnitFactory extends RepairFactory{
     {
         super(name);
         configurable = true;
+        clearOnDoubleTap = true;
         config(Integer.class,(ComponentUnitFactoryBuild build,Integer i) -> {
             build.selectedComponent = i;
         });

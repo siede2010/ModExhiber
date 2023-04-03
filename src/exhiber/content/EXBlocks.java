@@ -912,7 +912,6 @@ public class EXBlocks{
             {{
                 requirements(Category.turret,with(EXItems.tenorite,120,EXItems.brass,80,EXItems.fiberGlass,20,EXItems.vanadium,20));
                 localizedName = "Drumicade";
-                drawer = new DrawTurret(name("gas"));
                 shoot = new ShootSpread(4,10);
                 recoil = 6;
                 range = 4.6f * (0.8f * 60f);
@@ -1084,6 +1083,14 @@ public class EXBlocks{
                                 }};
                         }}
                 );
+                drawer = new DrawTurret(name("gas")){{
+                    parts.addAll(
+                            new RegionPart("-barrels"){{
+                                progress = PartProgress.recoil;
+                                moveY = -4f;
+                            }}
+                    );
+                }};
             }};
             sinusoidal = new ItemTurret("sinusoidal"){{
                 requirements(Category.turret,with(EXItems.zinc,200,EXItems.vanadium,70,EXItems.brass,80,EXItems.fiberGlass,10));
