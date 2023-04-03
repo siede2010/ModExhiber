@@ -1468,13 +1468,13 @@ public class EXBlocks{
             }};
             componentAssembler = new ComponentUnitFactory("component-assembler")
             {{
-                requirements(Category.units,with());
+                requirements(Category.units,with(EXItems.chalk,500,EXItems.zinc,250,EXItems.tenorite,180,EXItems.brass,120));
                 localizedName = "Component Assembler";
                 size = 3;
-                addComponent(EXStatusEffects.componentBrute,with(Items.copper,1));
-                addComponent(EXStatusEffects.componentFreeze,with(Items.copper,2));
-                addComponent(EXStatusEffects.componentShield,with(Items.copper,3));
-                addComponent(EXStatusEffects.componentSpeed,with(Items.copper,4));
+                addComponent(EXStatusEffects.componentBrute,with(EXItems.brass,40,EXItems.tenorite,50,EXItems.rawClay,10));
+                addComponent(EXStatusEffects.componentFreeze,with(EXItems.chalk,100,EXItems.diamond,20,EXItems.dryIce,4));
+                addComponent(EXStatusEffects.componentShield,with(EXItems.diamond,80,EXItems.vanadium,50));
+                addComponent(EXStatusEffects.componentSpeed,with(EXItems.vanadium,40,EXItems.radium,20,EXItems.zinc,40));
             }};
             heatProcessor = new ExhiberLogicBlock("heat-processor"){{
                 requirements(Category.logic,with(EXItems.rawClay,60,EXItems.zinc,120,EXItems.quartz,40));
