@@ -12,6 +12,7 @@ import exhiber.world.SquareBaseShiled;
 import exhiber.world.block.*;
 import exhiber.world.block.crafter.*;
 import exhiber.world.block.distribution.*;
+import exhiber.world.block.effect.StatusEffectBlock;
 import exhiber.world.block.energy.*;
 import exhiber.world.block.logic.*;
 import exhiber.world.block.unit.*;
@@ -47,6 +48,7 @@ import mindustry.world.meta.*;
 
 import static arc.graphics.g2d.Draw.color;
 import static arc.graphics.g2d.Lines.stroke;
+import static exhiber.content.EXItems.*;
 import static mindustry.type.ItemStack.with;
 
 public class EXBlocks{
@@ -62,7 +64,7 @@ public class EXBlocks{
             //Effects
             /*Cores*/corePad,coreVessel,coreHeaven,
 
-            vanadiumMender,isolatorVault,
+            vanadiumMender,isolatorVault,smallRainShield,
             //Liquids
             zincConduit,mixUp,
             //Distribution
@@ -150,7 +152,7 @@ public class EXBlocks{
                 absorbLasers = true;
             }};
             moduleMK1 = new Wall("module-mk-1"){{
-                requirements(null,with(EXItems.zinc,20,EXItems.tenorite,10));
+                requirements(null,with(zinc,20,EXItems.tenorite,10));
                 localizedName = "Module-Mk 1";
                 health = 1;
                 armor = -10;
@@ -170,7 +172,7 @@ public class EXBlocks{
             zincOre = new OreBlock("zinc-ore"){{
                 localizedName = "Zinc Ore";
                 variants = 3;
-                itemDrop = EXItems.zinc;
+                itemDrop = zinc;
                 envEnabled = 5;
             }};
             copperOre = new OreBlock("copper-ore"){{
@@ -325,7 +327,7 @@ public class EXBlocks{
             //Blocks start here
 
             zincJunction = new Junction("zinc-junction"){{
-                requirements(Category.distribution,with(EXItems.zinc,3,EXItems.chalk,1));
+                requirements(Category.distribution,with(zinc,3,EXItems.chalk,1));
                 localizedName = "Zinc Junction";
                 capacity = 6;
                 size = 1;
@@ -335,7 +337,7 @@ public class EXBlocks{
                 envEnabled = 5;
             }};
             zincGutter = new StaticConveyor("zinc-gutter"){{
-                requirements(Category.distribution,with(EXItems.zinc,1));
+                requirements(Category.distribution,with(zinc,1));
                 speed = 0.05f;
                 displayedSpeed = 0.05f;
                 size = 1;
@@ -347,7 +349,7 @@ public class EXBlocks{
                 alwaysUnlocked = true;
             }};
             zincDispatcher = new Router("zinc-dispatcher"){{
-                requirements(Category.distribution,with(EXItems.zinc,6,EXItems.chalk,2));
+                requirements(Category.distribution,with(zinc,6,EXItems.chalk,2));
                 localizedName = "Zinc Dispatcher";
                 speed = 0.2f;
                 size = 1;
@@ -356,7 +358,7 @@ public class EXBlocks{
                 envEnabled = 5;
             }};
             corePad = new CoreBlock("core-pad"){{
-                requirements(Category.effect,with(EXItems.zinc,200,EXItems.diamond,100,EXItems.tenorite,20));
+                requirements(Category.effect,with(zinc,200,EXItems.diamond,100,EXItems.tenorite,20));
                 localizedName = "Core: Pad";
                 size = 2;
                 health = 780;
@@ -367,7 +369,7 @@ public class EXBlocks{
                 envEnabled = 5;
             }};
             coreVessel = new CoreBlock("core-vessel"){{
-                requirements(Category.effect,with(EXItems.zinc,1000,EXItems.quartz,400,EXItems.brass,200));
+                requirements(Category.effect,with(zinc,1000,EXItems.quartz,400,EXItems.brass,200));
                 localizedName = "Core: Vessel";
                 size = 3;
                 health = 1520;
@@ -378,7 +380,7 @@ public class EXBlocks{
                 envEnabled = 5;
             }};
             chalkScraper = new Drill("chalk-scraper"){{
-                requirements(Category.production,with(EXItems.zinc,20));
+                requirements(Category.production,with(zinc,20));
                localizedName = "Chalk Scraper";
                 size = 2;
                health = 240;
@@ -390,7 +392,7 @@ public class EXBlocks{
                 tier = 1;
             }};
             diamondCompressor = new GenericCrafter("diamond-compressor"){{
-                requirements(Category.crafting,with(EXItems.zinc,80,EXItems.chalk,200,EXItems.tenorite,50));
+                requirements(Category.crafting,with(zinc,80,EXItems.chalk,200,EXItems.tenorite,50));
                 localizedName = "Diamond Compressor";
                 size = 1;
                 craftTime = 150;
@@ -399,19 +401,19 @@ public class EXBlocks{
                 craftEffect = Fx.smoke;
             }};
             zincConduit = new Conduit("zinc-conduit"){{
-                requirements(Category.liquid,with(EXItems.zinc,2,EXItems.diamond,2));
+                requirements(Category.liquid,with(zinc,2,EXItems.diamond,2));
                localizedName = "Zinc Conduit";
                health = 40;
                 envEnabled = 5;
             }};
             zincWires = new PowerCable("zinc-wire"){{
-                requirements(Category.power,with(EXItems.zinc,2,EXItems.tenorite,1));
+                requirements(Category.power,with(zinc,2,EXItems.tenorite,1));
                 localizedName = "Zinc Wire";
                 health = 65;
                 hasShadow = false;
             }};
             copperCoil = new Battery("copper-coil"){{
-                requirements(Category.power,with(EXItems.zinc,20,EXItems.tenorite,20,EXItems.rawClay,10));
+                requirements(Category.power,with(zinc,20,EXItems.tenorite,20,EXItems.rawClay,10));
                 localizedName = "Tenorite Coil";
                 consumePowerBuffered(5000);
                 emptyLightColor = Color.valueOf("e0b38d");
@@ -419,8 +421,8 @@ public class EXBlocks{
                 size = 2;
                 health = 420;
             }};
-            magnifyingGlass = new MultiLiquifier("magnifying-glass",Seq.with(EXItems.zinc,EXItems.brass,EXItems.tenorite,EXItems.vanadium),Seq.with(EXLiquids.liquidZinc,EXLiquids.liquidBrass,EXLiquids.liquidTenorite,EXLiquids.liquidVanadium)){{
-                requirements(Category.crafting,with(EXItems.zinc,80,EXItems.tenorite,40,EXItems.diamond,80));
+            magnifyingGlass = new MultiLiquifier("magnifying-glass",Seq.with(zinc,EXItems.brass,EXItems.tenorite,EXItems.vanadium),Seq.with(EXLiquids.liquidZinc,EXLiquids.liquidBrass,EXLiquids.liquidTenorite,EXLiquids.liquidVanadium)){{
+                requirements(Category.crafting,with(zinc,80,EXItems.tenorite,40,EXItems.diamond,80));
                 localizedName = "Magnifying Glass";
                 liquidCapacity = 300;
                 itemCapacity = 10;
@@ -430,7 +432,7 @@ public class EXBlocks{
                 craftEffect = Fx.absorb;
             }};
             rainCollector = new WeatherCrafter("rain-collector", EXWeather.diamondRain){{
-                requirements(Category.crafting,with(EXItems.zinc,30,EXItems.chalk,20));
+                requirements(Category.crafting,with(zinc,30,EXItems.chalk,20));
                 localizedName = "Rain Collector";
                 size = 2;
                 craftTime = 160;
@@ -438,7 +440,7 @@ public class EXBlocks{
                 craftEffect = ExEffects.collectRain;
             }};
             swift = new ItemTurret("swift"){{
-                requirements(Category.turret,with(EXItems.zinc,12,EXItems.diamond,8));
+                requirements(Category.turret,with(zinc,12,EXItems.diamond,8));
                 localizedName = "Swift";
                 range = 18*8;
                 reload = 80;
@@ -475,7 +477,7 @@ public class EXBlocks{
                 drawer = new DrawTurret(name("gas"));
             }};
             dispel = new ItemTurret("dispel"){{
-                requirements(Category.turret,with(EXItems.zinc,20,EXItems.tenorite,8));
+                requirements(Category.turret,with(zinc,20,EXItems.tenorite,8));
                 localizedName = "Dispel";
                 description = "Rapidly fires homing pellets. With devistation damage.";
                 health = 320;
@@ -484,7 +486,7 @@ public class EXBlocks{
                 reload = 20;
                 inaccuracy = 10;
                 ammo(
-                        EXItems.zinc, new BasicBulletType(2.6f,18){{
+                        zinc, new BasicBulletType(2.6f,18){{
                             reloadMultiplier = 1.5f;
                             lifetime = 60f;
                             frontColor = Color.valueOf("eeeeff");
@@ -557,7 +559,7 @@ public class EXBlocks{
                 drawer = new DrawTurret(name("gas"));
             }};
             reflect = new ContinuousTurret("reflect"){{
-                requirements(Category.turret,with(EXItems.zinc,16,EXItems.quartz,8,EXItems.diamond,12));
+                requirements(Category.turret,with(zinc,16,EXItems.quartz,8,EXItems.diamond,12));
                 localizedName = "Reflect";
                 range = 110;
                 reload = 40;
@@ -603,7 +605,7 @@ public class EXBlocks{
                 drawer = new DrawTurret(name("gas"));
             }};
             flow = new ItemTurret("flow"){{
-                requirements(Category.turret,with(EXItems.zinc,40,EXItems.rawClay,20,EXItems.vanadium,20));
+                requirements(Category.turret,with(zinc,40,EXItems.rawClay,20,EXItems.vanadium,20));
                 localizedName = "Flow";
                 size = 2;
                 health = 1200;
@@ -869,7 +871,7 @@ public class EXBlocks{
                 consumeLiquid(EXLiquids.ammonia,16f/60f);
             }};
             conflict = new ItemTurret("conflict"){{
-                requirements(Category.turret,with(EXItems.zinc,100,EXItems.vanadium,35,EXItems.brass,30,EXItems.chalk,30));
+                requirements(Category.turret,with(zinc,100,EXItems.vanadium,35,EXItems.brass,30,EXItems.chalk,30));
                 localizedName = "Conflict";
                 size = 2;
                 health = 1800;
@@ -880,11 +882,11 @@ public class EXBlocks{
                 itemCapacity = 10;
                 inaccuracy = 8;
                 ammo(
-                        EXItems.zinc,new BasicBulletType(4,15)
+                        zinc,new BasicBulletType(4,15)
                         {{
                             lifetime = setRange(22,4);
                             trailWidth = 2;
-                            trailColor = frontColor = backColor = lightColor = EXItems.zinc.color;
+                            trailColor = frontColor = backColor = lightColor = zinc.color;
                             trailLength = 22;
                             ammoMultiplier = 2f;
                         }},
@@ -1029,7 +1031,7 @@ public class EXBlocks{
                                     });
                                 }};
                         }},
-                        EXItems.zinc,new BulletType()
+                        zinc,new BulletType()
                         {{
                             reloadMultiplier = 1.25f;
                                 shootEffect = Fx.unitSpawn;
@@ -1046,7 +1048,7 @@ public class EXBlocks{
                                     rotateSpeed *= 1.5f;
                                     homingDelay = 20f;
                                     homingPower = 0.02f;
-                                    trailColor = lightColor = EXItems.zinc.color;
+                                    trailColor = lightColor = zinc.color;
                                     lowAltitude = true;
                                     engineSize = 3f;
                                     deathExplosionEffect = Fx.none;
@@ -1093,7 +1095,7 @@ public class EXBlocks{
                 }};
             }};
             sinusoidal = new ItemTurret("sinusoidal"){{
-                requirements(Category.turret,with(EXItems.zinc,200,EXItems.vanadium,70,EXItems.brass,80,EXItems.fiberGlass,10));
+                requirements(Category.turret,with(zinc,200,EXItems.vanadium,70,EXItems.brass,80,EXItems.fiberGlass,10));
                 localizedName = "Sinusoidal";
                 size = 3;
                 recoil = 4f;
@@ -1245,7 +1247,7 @@ public class EXBlocks{
                 drawer = new DrawTurret(name("gas"));
             }};
             turboDrill = new Drill("turbo-drill"){{
-                requirements(Category.production,with(EXItems.zinc,30,EXItems.chalk,10));
+                requirements(Category.production,with(zinc,30,EXItems.chalk,10));
                 localizedName = "Turbo Drill";
                 tier = 4;
                 size = 2;
@@ -1274,7 +1276,7 @@ public class EXBlocks{
                 consumeLiquid(Liquids.nitrogen,12f/60f);
             }};
             moduleAssembler = new SelectiveConstructor("module-assembler",new Block[]{moduleMK1,swift,dispel,brassWall,vanadiumWall,vanadiumMender,clayWall,electricModuleEM1,reflect,tensor}){{
-                requirements(Category.units,with(EXItems.zinc,100,EXItems.diamond,20,EXItems.chalk,80));
+                requirements(Category.units,with(zinc,100,EXItems.diamond,20,EXItems.chalk,80));
                 localizedName = "Module Assembler";
                 maxBlockSize = 3;
                 minBlockSize = 0;
@@ -1282,12 +1284,12 @@ public class EXBlocks{
 
             }};
             payloadGutter = new PayloadConveyor("payload-gutter"){{
-                requirements(Category.units,with(EXItems.zinc,20,EXItems.chalk,8,EXItems.tenorite,10));
+                requirements(Category.units,with(zinc,20,EXItems.chalk,8,EXItems.tenorite,10));
                 localizedName = "Payload Gutter";
                 size = 3;
             }};
             brassForge = new GenericCrafter("brass-forge"){{
-                requirements(Category.crafting,with(EXItems.zinc,60,EXItems.chalk,40,EXItems.diamond,40));
+                requirements(Category.crafting,with(zinc,60,EXItems.chalk,40,EXItems.diamond,40));
                 localizedName = "Brass Forge";
                 size = 3;
                 consumeLiquid(EXLiquids.liquidZinc,6f/60f);
@@ -1341,7 +1343,7 @@ public class EXBlocks{
                 powerProduction = 12f/60f;
             }};
             tartarusRadiator = new GenericCrafter("tartarus-radiator"){{
-                requirements(Category.crafting,with(EXItems.zinc,400,EXItems.vanadium,400,EXItems.brass,200,EXItems.quartz,200));
+                requirements(Category.crafting,with(zinc,400,EXItems.vanadium,400,EXItems.brass,200,EXItems.quartz,200));
                 localizedName = "Tartarus Radiator";
                 health = 500;
                 size = 4;
@@ -1354,7 +1356,7 @@ public class EXBlocks{
                 updateEffectChance = 0.1f;
             }};
             tartarusImpulator = new GenericCrafter("tartarus-impulator"){{
-                requirements(Category.crafting,with(EXItems.zinc,650,EXItems.vanadium,820,EXItems.brass,560,EXItems.quartz,420,EXItems.fiberGlass,50));
+                requirements(Category.crafting,with(zinc,650,EXItems.vanadium,820,EXItems.brass,560,EXItems.quartz,420,EXItems.fiberGlass,50));
                 localizedName = "Tartarus Impulator";
                 itemCapacity = 16;
                 health = 1400;
@@ -1368,7 +1370,7 @@ public class EXBlocks{
                 updateEffectChance = 0.1f;
             }};
             magnumAssembler = new UnitAssembler("magnum-assembler"){{
-                requirements(Category.units,with( EXItems.zinc,100,EXItems.tenorite,60,EXItems.brass,60));
+                requirements(Category.units,with( zinc,100,EXItems.tenorite,60,EXItems.brass,60));
                  localizedName = "Magnum Assembler";
                  size = 3;
                  consumePower(20f/60f);
@@ -1418,14 +1420,14 @@ public class EXBlocks{
                 craftEffect = Fx.producesmoke;
             }};
             windmill = new ConsumeGenerator("wind-mill"){{
-                requirements(Category.power,with(EXItems.zinc,20,EXItems.tenorite,12,EXItems.chalk,12));
+                requirements(Category.power,with(zinc,20,EXItems.tenorite,12,EXItems.chalk,12));
                 localizedName = "Wind Mill";
                 powerProduction = 8f/60f;
                 size = 2;
 
             }};
             eliteRefabricator = new UnitAssembler("elite-fabricator"){{
-                requirements(Category.units,with( EXItems.zinc,200,EXItems.quartz,60,EXItems.brass,100,EXItems.rawClay,100,EXItems.vanadium,50));
+                requirements(Category.units,with( zinc,200,EXItems.quartz,60,EXItems.brass,100,EXItems.rawClay,100,EXItems.vanadium,50));
                 localizedName = "Elite Fabricator";
                 size = 5;
                 health = 2800;
@@ -1441,7 +1443,7 @@ public class EXBlocks{
                 );
             }};
             moduleAssemblerLarge = new SelectiveConstructor("large-module-assembler",new Block[] {moduleMK2,clayWallLarge,brassWallLarge,vanadiumWallLarge,flow,scourge,effervescence}){{
-                requirements(Category.units,with(EXItems.zinc,1200,EXItems.vanadium,200,EXItems.fiberGlass,200));
+                requirements(Category.units,with(zinc,1200,EXItems.vanadium,200,EXItems.fiberGlass,200));
                 localizedName = "Large Module Assembler";
                 maxBlockSize = 3;
                 minBlockSize = 0;
@@ -1454,7 +1456,7 @@ public class EXBlocks{
                 size = 2;
             }};
             fiberRepairStation = new RepairFactory("fiber-repair-station"){{
-                requirements(Category.units,with(EXItems.fiberGlass,25,EXItems.zinc,120,EXItems.brass,80));
+                requirements(Category.units,with(EXItems.fiberGlass,25, zinc,120,EXItems.brass,80));
                 localizedName = "Fiber Repair Station";
                 description = "Heals both Tier 1 and Tier 2 Units";
                 consumeItems(with(EXItems.brass,5,EXItems.chalk,20));
@@ -1475,16 +1477,16 @@ public class EXBlocks{
             }};
             componentAssembler = new ComponentUnitFactory("component-assembler")
             {{
-                requirements(Category.units,with(EXItems.chalk,500,EXItems.zinc,250,EXItems.tenorite,180,EXItems.brass,120));
+                requirements(Category.units,with(EXItems.chalk,500, zinc,250,EXItems.tenorite,180,EXItems.brass,120));
                 localizedName = "Component Assembler";
                 size = 3;
                 addComponent(EXStatusEffects.componentBrute,with(EXItems.brass,40,EXItems.tenorite,50,EXItems.rawClay,10));
                 addComponent(EXStatusEffects.componentFreeze,with(EXItems.chalk,100,EXItems.diamond,20,EXItems.dryIce,4));
                 addComponent(EXStatusEffects.componentShield,with(EXItems.diamond,80,EXItems.vanadium,50));
-                addComponent(EXStatusEffects.componentSpeed,with(EXItems.vanadium,40,EXItems.radium,20,EXItems.zinc,40));
+                addComponent(EXStatusEffects.componentSpeed,with(EXItems.vanadium,40,EXItems.radium,20, zinc,40));
             }};
             heatProcessor = new ExhiberLogicBlock("heat-processor"){{
-                requirements(Category.logic,with(EXItems.rawClay,60,EXItems.zinc,120,EXItems.quartz,40));
+                requirements(Category.logic,with(EXItems.rawClay,60, zinc,120,EXItems.quartz,40));
                 localizedName = "Heat Processor";
 
                 consumePower(24f/60f);
@@ -1501,7 +1503,7 @@ public class EXBlocks{
                 localizedName = "Mix Up";
             }};
             tunnelExtractor = new AttributeCrafter("tunnel-extractor"){{
-                requirements(Category.crafting,with(EXItems.zinc,1000));
+                requirements(Category.crafting,with(zinc,1000));
                 localizedName = "Tunnel Extractor";
                 size = 5;
                 attribute = EXAttributes.tunnel;
@@ -1516,7 +1518,7 @@ public class EXBlocks{
                 consumePower(200f/60f);
                 craftTime = 150;
                 consumeLiquid(Liquids.nitrogen,12f/60f);
-                consumeItems(with(EXItems.vanadium,2,EXItems.zinc,2,EXItems.radium,1));
+                consumeItems(with(EXItems.vanadium,2, zinc,2,EXItems.radium,1));
                 outputItem = new ItemStack(EXItems.hyperfluxMatter,2);
                 craftEffect = ExEffects.superfluxeffect;
             }};
@@ -1539,7 +1541,7 @@ public class EXBlocks{
                 size = 3;
                 range = 25;
                 itemCapacity = 100;
-                consumeItems(with(EXItems.zinc,24,EXItems.rawClay,10));
+                consumeItems(with(zinc,24,EXItems.rawClay,10));
                 railId = 1;
             }};
             smallTrajectoryUnloader = new CarDeposit("small-trajectory-unloader"){{
@@ -1568,7 +1570,7 @@ public class EXBlocks{
                 size = 5;
                 range = 46;
                 itemCapacity = 200;
-                consumeItems(with(EXItems.zinc,120,EXItems.rawClay,50));
+                consumeItems(with(zinc,120,EXItems.rawClay,50));
                 railId = 2;
                 railSize = 2;
             }};
@@ -1581,6 +1583,20 @@ public class EXBlocks{
                 itemCapacity = 1000;
                 railId = 2;
                 railSize = 2;
+            }};
+            smallRainShield = new StatusEffectBlock("small-rain-shield")
+            {{
+                requirements(Category.effect,with(zinc,320,vanadium,40,radium,10));
+                localizedName = "Small Rain Shield";
+                size = 3;
+                radius = 8*28;
+                consumeTime = 120;
+                consumeItem(tenorite);
+                consumeLiquid(Liquids.nitrogen,5f/60f);
+                consumePower(10f/60f);
+                statusEffect = EXStatusEffects.antiScabbed;
+                statusEffectDuration = 121;
+                unitEffect = Fx.shieldApply;
             }};
             /*
             Extra Down Here
@@ -1606,16 +1622,16 @@ public class EXBlocks{
                 requirements(Category.units,BuildVisibility.sandboxOnly, with(Items.copper, 60, Items.lead, 70));
                 localizedName = "Siege Production Center";
                 plans = Seq.with(
-                        new UnitPlan(EXUnits.probe, 60f * 45, with(EXItems.zinc,20,EXItems.tenorite,10)),
+                        new UnitPlan(EXUnits.probe, 60f * 45, with(zinc,20,EXItems.tenorite,10)),
                         new UnitPlan(EXUnits.voyager, 60f * 60, with(EXItems.brass,35,EXItems.vanadium,10)),
                         new UnitPlan(EXUnits.satellite, 60f * 90, with(EXItems.brass,50,EXItems.fiberGlass,10)),
-                        new UnitPlan(EXUnits.barricade, 60f * 90, with(EXItems.zinc,20,EXItems.tenorite,10))
+                        new UnitPlan(EXUnits.barricade, 60f * 90, with(zinc,20,EXItems.tenorite,10))
                 );
                 size = 3;
                 consumePower(1f/60f);
             }};
             coreHeaven = new CoreBlock("core-heaven"){{
-                requirements(Category.effect, BuildVisibility.sandboxOnly,with(EXItems.zinc,200,EXItems.diamond,100,EXItems.tenorite,20));
+                requirements(Category.effect, BuildVisibility.sandboxOnly,with(zinc,200,EXItems.diamond,100,EXItems.tenorite,20));
                 localizedName = "Core: Heaven";
                 size = 2;
                 health = 10000000;

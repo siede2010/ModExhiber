@@ -1783,12 +1783,11 @@ public class EXUnits{
             localizedName = "Barricade - Defense Formation";
             health = 480;
             armor = 2;
-            flying = true;
             drag = 0.25f;
             speed = 0;
             engineSize = 1.25f;
             engineOffset = 3f;
-            constructor = EntityMapping.map("flare");
+            constructor = EntityMapping.map("dagger");
             trailScl = 1f;
             trailColor = Pal.lightTrail;
             trailLength = 30;
