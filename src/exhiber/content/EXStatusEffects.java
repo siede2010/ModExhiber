@@ -3,6 +3,7 @@ package exhiber.content;
 import arc.Core;
 import arc.graphics.Color;
 import exhiber.entities.EnemyStatusFieldAbility;
+import exhiber.world.statusEffect.AlterStatusEffect;
 import exhiber.world.statusEffect.ComponentEffect;
 import exhiber.world.statusEffect.StatusEffectStack;
 import mindustry.content.StatusEffects;
@@ -55,12 +56,14 @@ public class EXStatusEffects {
                     opposite(scabbed);
                 });
             }};
-            advancedPlating = new StatusEffect("advanced-plating"){{
+            advancedPlating = new AlterStatusEffect("advanced-plating"){{
                 localizedName = "Advanced Plating";
                 description = "More advanced Plating that Also Protects the unit From Freezing and Burning";
                 healthMultiplier = 1.25f;
                 buildSpeedMultiplier = 1.2f;
                 speedMultiplier = 1.1f;
+                afterStatusEffect = protectivePlating;
+                afterStatusEffectDuration = 5*60;
                 init(() -> {
                     opposite(scabbed,StatusEffects.burning,StatusEffects.freezing);
                 });

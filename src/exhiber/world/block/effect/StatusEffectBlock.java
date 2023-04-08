@@ -2,6 +2,7 @@ package exhiber.world.block.effect;
 
 import arc.Core;
 import arc.graphics.g2d.Draw;
+import arc.graphics.g2d.Fill;
 import arc.graphics.g2d.Lines;
 import arc.graphics.g2d.TextureRegion;
 import arc.math.Mathf;
@@ -87,7 +88,9 @@ public class StatusEffectBlock extends Block {
                 Draw.color(team.color);
                 Draw.alpha(Math.abs((waveEffect-0.5f)*2));
                 Draw.rect(glowRegion, x, y);
-
+                Draw.color(team.color);
+                Draw.z(Layer.shields+2.5f);
+                Fill.circle(x, y, radius);
             }
         }
 

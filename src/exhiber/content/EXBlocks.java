@@ -1594,7 +1594,7 @@ public class EXBlocks{
                 consumeItem(tenorite);
                 consumeLiquid(Liquids.nitrogen,5f/60f);
                 consumePower(10f/60f);
-                statusEffect = EXStatusEffects.antiScabbed;
+                statusEffect = EXStatusEffects.advancedPlating;
                 statusEffectDuration = 121;
                 unitEffect = Fx.shieldApply;
             }};

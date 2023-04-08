@@ -1760,7 +1760,7 @@ public class EXUnits{
             engineSize = 1.25f;
             engineOffset = 3f;
             range = 8*56;
-            constructor = EntityMapping.map("flare");
+            constructor = EntityMapping.map("horizon");
             trailScl = 1f;
             trailColor = Pal.lightTrail;
             trailLength = 30;
