@@ -33,15 +33,23 @@ public class ExhiberMain extends Mod {
         //Overlay Render
         Events.run(Trigger.drawOver, () -> {
             if (Vars.renderer.animateShields && EXShaders.rainShield != null)
-                Draw.drawRange(Layer.shields + 2.5f, 1f, () -> Vars.renderer.effectBuffer.begin(Color.clear), () -> {
+                Draw.drawRange(Layer.flyingUnit + 3f, 1f, () -> {
+                    if (!Vars.renderer.effectBuffer.isBound())
+                        Vars.renderer.effectBuffer.begin(Color.clear);
+                    }, () ->
+                {
                     Vars.renderer.effectBuffer.end();
                     Vars.renderer.effectBuffer.blit(EXShaders.rainShield);
+                    if (Vars.renderer.effectBuffer.isBound())
+                        Vars.renderer.effectBuffer.endBind();
                 });
         });
     }
     @Override
     public void loadContent(){
         EXStats.load();
+        EXShaders.init();
+        EXCacheLayer.init();
         ExEffects.load();
         EXAttributes.load();
         EXTeams.load();
@@ -55,6 +63,7 @@ public class ExhiberMain extends Mod {
         ExhiberLoadouts.load();
         EXPlanets.EXload();
         ExhiberTechTree.load();
+        EXEventType.load();
 
         Log.info("Loading some example content.");
     }
@@ -62,6 +71,5 @@ public class ExhiberMain extends Mod {
     @Override
     public void init(){
         super.init();
-        EXShaders.init();
     }
 }

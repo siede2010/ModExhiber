@@ -22,7 +22,6 @@ public class StatusEffectBlock extends Block {
     public float radius = 80;
     public StatusEffect statusEffect = StatusEffects.none;
     public float statusEffectDuration = 60;
-    public Effect unitEffect = Fx.none;
     public TextureRegion glowRegion;
     public float interval = 30;
     public float consumeTime = 60;
@@ -64,7 +63,6 @@ public class StatusEffectBlock extends Block {
                     Groups.unit.intersect(x - radius, y - radius, radius * 2, radius * 2, u -> {
                         if (u.team == team && Mathf.len(u.x - x, u.y - y) <= radius) {
                             u.apply(statusEffect, statusEffectDuration);
-                            unitEffect.at(u.x, u.y);
                         }});
                     prog %= interval;
                 }
@@ -89,8 +87,8 @@ public class StatusEffectBlock extends Block {
                 Draw.alpha(Math.abs((waveEffect-0.5f)*2));
                 Draw.rect(glowRegion, x, y);
                 Draw.color(team.color);
-                Draw.z(Layer.shields+2.5f);
-                Fill.circle(x, y, radius);
+                Draw.z(Layer.flyingUnit+3f);
+                Fill.poly(x, y,20, radius,0);
             }
         }
 

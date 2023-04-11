@@ -1,7 +1,11 @@
 package exhiber.world.statusEffect;
 
+import arc.Events;
 import arc.struct.Seq;
+import exhiber.content.EXEventType;
+import mindustry.Vars;
 import mindustry.entities.abilities.Ability;
+import mindustry.game.EventType;
 import mindustry.game.Team;
 import mindustry.gen.Unit;
 import mindustry.type.StatusEffect;
@@ -37,13 +41,8 @@ public class ComponentEffect extends StatusEffect {
     public void start(Unit unit)
     {
         unitTeam.add(unit);
-        Ability[] abilite = new Ability[unit.abilities.length+abilities.size];
-        int i = 0;
-        for (Ability a : unit.abilities)
-            abilite[i++] = a;
-        for (Ability a : abilities)
-            abilite[i++] = a;
-        unit.abilities = abilite;
+        Events.fire(new EXEventType.AddAbilityEvent(unit,abilities));
+
     }
 
     @Override

@@ -42,7 +42,7 @@ public class EXUnits{
     /*Rampage Path*/loner,lonerUp,rouge,rougeUp,revenger,warbringer,
     /*Protector Path*/bonfire,bonfireUp,campfire,campfireUp,barrack,
     /*Freezing Path*/polar,polarUp,brainFreeze,frostBite,
-    /*Siege Path*/barricade,barricadeDefense,
+    /*Siege Path*/barricade,barricadeDefense,mastodon,
     /*Kaon Path (Lava Path)*/cheron,titania,
 
     /*Sandbox Path*/probe,voyager,satellite,
@@ -1019,71 +1019,87 @@ public class EXUnits{
             legLength = 15f;
             range = 20*8f;
             legGroupSize = 4;
-            weapons.add(new Weapon(name("campfire-repair")){{
-                shootSound = Sounds.bolt;
-                layerOffset = 0.0001f;
-                reload = 20f;
-                shootY = 10f;
-                recoil = 1f;
-                rotate = true;
-                rotateSpeed = 1.4f;
+            weapons.add(new Weapon(name("")){{
+                x = 0;
+                y = 4;
                 mirror = false;
-                shootCone = 2f;
-                x = 0f;
-                y = 0f;
-                heatColor = Pal.heal;
-                cooldownTime = 30f;
-
-                shoot = new ShootAlternate(3.5f);
-
-                bullet = new RailBulletType(){{
-                    length = 20*8f;
-                    damage = 48f;
-                    hitColor = Color.valueOf("feb380");
-                    hitEffect = endEffect = Fx.hitBulletColor;
-                    pierceDamageFactor = 0.8f;
-                    healAmount = 10;
-                    collidesTeam = true;
-
-                    smokeEffect = Fx.colorSpark;
-
-                    endEffect = new Effect(14f, e -> {
-                        color(e.color);
-                        Drawf.tri(e.x, e.y, e.fout() * 1.5f, 5f, e.rotation);
-                    });
-
-                    shootEffect = new Effect(10, e -> {
-                        color(e.color);
-                        float w = 1.2f + 7 * e.fout();
-
-                        Drawf.tri(e.x, e.y, w, 30f * e.fout(), e.rotation);
-                        color(e.color);
-
-                        for(int i : Mathf.signs){
-                            Drawf.tri(e.x, e.y, w * 0.9f, 18f * e.fout(), e.rotation + i * 90f);
-                        }
-
-                        Drawf.tri(e.x, e.y, w, 4f * e.fout(), e.rotation + 180f);
-                    });
-
-                    lineEffect = new Effect(20f, e -> {
-                        if(!(e.data instanceof Vec2 v)) return;
-
-                        color(e.color);
-                        stroke(e.fout() * 0.9f + 0.6f);
-
-                        Fx.rand.setSeed(e.id);
-                        for(int i = 0; i < 7; i++){
-                            Fx.v.trns(e.rotation, Fx.rand.random(8f, v.dst(e.x, e.y) - 8f));
-                            Lines.lineAngleCenter(e.x + Fx.v.x, e.y + Fx.v.y, e.rotation + e.finpow(), e.foutpowdown() * 20f * Fx.rand.random(0.5f, 1f) + 0.3f);
-                        }
-
-                        e.scaled(14f, b -> {
-                            stroke(b.fout() * 1.5f);
-                            color(e.color);
-                            Lines.line(e.x, e.y, v.x, v.y);
-                        });
-                    });
+                top = false;
+                reload = 60f/0.8f;
+                bullet = new LaserBoltBulletType(4f,45)
+                {{
+                    lifetime = setRange(20,this.speed);
+                    trailWidth = 2;
+                    trailLength = 30;
+                    trailColor = backColor = lightColor = Pal.heal;
+                    despawnShake = hitShake = 1;
+                    ejectEffect = Fx.greenCloud;
+                    smokeEffect = Fx.greenCloud;
+                    knockback = -0.5f;
+                    fragRandomSpread = 0;
+                    fragLifeMin = fragLifeMax = 1;
+                    fragVelocityMin = fragVelocityMax = 1;
+                    fragSpread = 30;
+                    fragBullets = 12;
+                    homingPower = 0.02f;
+                    pierceCap = 2;
+                    fragBullet = new LaserBoltBulletType(8,5)
+                    {{
+                        lifetime = setRange(14,this.speed);
+                        trailWidth = 2;
+                        trailLength = 15;
+                        homingPower = 0.08f;
+                        trailColor = backColor = lightColor = Pal.heal;
+                        despawnShake = hitShake = 0.2f;
+                        ejectEffect = Fx.greenCloud;
+                        smokeEffect = Fx.greenCloud;
+                        knockback = -2;
+                        pierceCap = 2;
+                    }};
+                    despawnEffect = hitEffect = Fx.greenLaserCharge;
+                }};
+            }});
+            weapons.add(new RepairBeamWeapon(name("campfire-repair")) {{
+                x = 4f;
+                y = -4f;
+                shootY = 3f;
+                beamWidth = 0.8f;
+                mirror = true;
+                repairSpeed = 0.5f;
+                bullet = new BulletType() {{
+                    maxRange = 11 * 8f;
+                }};
+            }});
+            weapons.add(new RepairBeamWeapon(name("campfire-repair")) {{
+                x = 4f;
+                y = 4f;
+                shootY = 3f;
+                beamWidth = 0.8f;
+                mirror = true;
+                repairSpeed = 0.5f;
+                bullet = new BulletType() {{
+                    maxRange = 11 * 8f;
+                }};
+            }});
+            weapons.add(new Weapon() {{
+                shootOnDeath = true;
+                reload = 24f;
+                shootCone = 180f;
+                shootSound = Sounds.explosion;
+                controllable = false;
+                x = shootY = 0f;
+                mirror = false;
+                bullet = new BulletType() {{
+                    collidesTiles = false;
+                    collides = false;
+                    hitSound = Sounds.explosion;
+                    rangeOverride = 30f;
+                    speed = 0f;
+                    splashDamageRadius = 5 * 8f;
+                    instantDisappear = true;
+                    splashDamage = 300f;
+                    killShooter = true;
+                    hittable = false;
+                    collidesAir = true;
                 }};
             }});
         }};
@@ -1812,6 +1828,89 @@ public class EXUnits{
                         }};
                     }}
             );
+        }};
+        mastodon = new UnitType("mastodon") {{
+            localizedName = "Mastodon";
+            constructor = EntityMapping.map("merui");
+            abilities.add(new StatusFieldAbility(EXStatusEffects.advancedPlating, 480f, 360f, 5 * 8f));
+            immunities.add(EXStatusEffects.scabbed);
+            health = 2000;
+            armor = 9;
+            faceTarget = true;
+            baseRotateSpeed = 10;
+            hitSize = 18;
+            speed = 1f / 7.5f;
+            legCount = 4;
+            legLength = 15f;
+            range = 20*8f;
+            legGroupSize = 4;
+            weapons.add(new Weapon(name("campfire-repair")){{
+                shootSound = Sounds.bolt;
+                layerOffset = 0.0001f;
+                reload = 20f;
+                shootY = 10f;
+                recoil = 1f;
+                rotate = true;
+                rotateSpeed = 1.4f;
+                mirror = false;
+                shootCone = 2f;
+                x = 0f;
+                y = 0f;
+                heatColor = Pal.heal;
+                cooldownTime = 30f;
+
+                shoot = new ShootAlternate(3.5f);
+
+                bullet = new RailBulletType(){{
+                    length = 20*8f;
+                    damage = 48f;
+                    hitColor = Color.valueOf("feb380");
+                    hitEffect = endEffect = Fx.hitBulletColor;
+                    pierceDamageFactor = 0.8f;
+                    healAmount = 10;
+                    collidesTeam = true;
+
+                    smokeEffect = Fx.colorSpark;
+
+                    endEffect = new Effect(14f, e -> {
+                        color(e.color);
+                        Drawf.tri(e.x, e.y, e.fout() * 1.5f, 5f, e.rotation);
+                    });
+
+                    shootEffect = new Effect(10, e -> {
+                        color(e.color);
+                        float w = 1.2f + 7 * e.fout();
+
+                        Drawf.tri(e.x, e.y, w, 30f * e.fout(), e.rotation);
+                        color(e.color);
+
+                        for(int i : Mathf.signs){
+                            Drawf.tri(e.x, e.y, w * 0.9f, 18f * e.fout(), e.rotation + i * 90f);
+                        }
+
+                        Drawf.tri(e.x, e.y, w, 4f * e.fout(), e.rotation + 180f);
+                    });
+
+                    lineEffect = new Effect(20f, e -> {
+                        if(!(e.data instanceof Vec2 v)) return;
+
+                        color(e.color);
+                        stroke(e.fout() * 0.9f + 0.6f);
+
+                        Fx.rand.setSeed(e.id);
+                        for(int i = 0; i < 7; i++){
+                            Fx.v.trns(e.rotation, Fx.rand.random(8f, v.dst(e.x, e.y) - 8f));
+                            Lines.lineAngleCenter(e.x + Fx.v.x, e.y + Fx.v.y, e.rotation + e.finpow(), e.foutpowdown() * 20f * Fx.rand.random(0.5f, 1f) + 0.3f);
+                        }
+
+                        e.scaled(14f, b -> {
+                            stroke(b.fout() * 1.5f);
+                            color(e.color);
+                            Lines.line(e.x, e.y, v.x, v.y);
+                        });
+                    });
+                }};
+            }});
         }};
     }
     public static String name(String n){

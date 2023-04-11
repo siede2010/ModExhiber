@@ -306,7 +306,7 @@ public class EXBlocks{
                 statusDuration = 180f;
                 liquidDrop = Liquids.nitrogen;
                 isLiquid = true;
-                cacheLayer = CacheLayer.water;
+                cacheLayer = EXCacheLayer.nitroPool;
                 albedo = 0.9f;
             }};
 
@@ -1596,7 +1596,6 @@ public class EXBlocks{
                 consumePower(10f/60f);
                 statusEffect = EXStatusEffects.advancedPlating;
                 statusEffectDuration = 121;
-                unitEffect = Fx.shieldApply;
             }};
             /*
             Extra Down Here
@@ -1622,10 +1621,11 @@ public class EXBlocks{
                 requirements(Category.units,BuildVisibility.sandboxOnly, with(Items.copper, 60, Items.lead, 70));
                 localizedName = "Siege Production Center";
                 plans = Seq.with(
-                        new UnitPlan(EXUnits.probe, 60f * 45, with(zinc,20,EXItems.tenorite,10)),
-                        new UnitPlan(EXUnits.voyager, 60f * 60, with(EXItems.brass,35,EXItems.vanadium,10)),
-                        new UnitPlan(EXUnits.satellite, 60f * 90, with(EXItems.brass,50,EXItems.fiberGlass,10)),
-                        new UnitPlan(EXUnits.barricade, 60f * 90, with(zinc,20,EXItems.tenorite,10))
+                        new UnitPlan(EXUnits.probe, 60f * 45, with(zinc,20,tenorite,10)),
+                        new UnitPlan(EXUnits.voyager, 60f * 60, with(brass,35,vanadium,10)),
+                        new UnitPlan(EXUnits.satellite, 60f * 90, with(brass,50,fiberGlass,10)),
+                        new UnitPlan(EXUnits.barricade, 60f * 90, with(zinc,20,tenorite,10)),
+                        new UnitPlan(EXUnits.mastodon, 60f*110,with(tenorite,20,brass,5))
                 );
                 size = 3;
                 consumePower(1f/60f);
