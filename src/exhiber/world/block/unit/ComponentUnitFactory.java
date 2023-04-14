@@ -63,7 +63,7 @@ public class ComponentUnitFactory extends RepairFactory{
 
         @Override
         public int getMaximumAccepted(Item item){
-            ItemStack[] itemstacks = selectedComponent > -1 ? ComponentUnitFactory.this.items.get(selectedComponent) : null;
+            ItemStack[] itemstacks = selectedComponent > -1 ? ComponentUnitFactory.this.items.get(selectedComponent) : ItemStack.empty;
             for(ItemStack is : itemstacks)
                 if (is.item == item)
                     return is.amount*2;
@@ -76,6 +76,7 @@ public class ComponentUnitFactory extends RepairFactory{
         public boolean eff()
         {
             ItemStack[] itemstacks = selectedComponent > -1 ? ComponentUnitFactory.this.items.get(selectedComponent) : null;
+            if (itemstacks == null) return true;
             for(ItemStack is : itemstacks)
                 if(is.amount > items.get(is.item))
                     return false;
@@ -102,7 +103,7 @@ public class ComponentUnitFactory extends RepairFactory{
                     moveOutPayload();
                 }else{ //update progress
                     if(moveInPayload()) {
-                        if(eff() && selectedComponent > -1)
+                        if(selectedComponent > -1 && eff())
                             progress += delta();
                     }
                             //upgrade the unit

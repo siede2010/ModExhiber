@@ -6,6 +6,7 @@ import arc.math.Mathf;
 import arc.math.geom.Vec2;
 import arc.struct.*;
 import exhiber.entities.EnemyStatusFieldAbility;
+import exhiber.world.abilitys.DamageAbility;
 import exhiber.world.abilitys.FixedRegenAbility;
 import mindustry.ai.UnitCommand;
 import mindustry.ai.types.*;
@@ -46,7 +47,9 @@ public class EXUnits{
     /*Kaon Path (Lava Path)*/cheron,titania,
 
     /*Sandbox Path*/probe,voyager,satellite,
-    /*Extra units*/maxwell,smallTrajectoryCar, largeTrajectoryCar
+    /*Extra units*/maxwell,smallTrajectoryCar, largeTrajectoryCar,
+
+            /*Wild unitrs*/joltarr,cirkwit,cirkwitEgg
 
             /*Bosses*/
             ;
@@ -57,9 +60,87 @@ public class EXUnits{
         loadProtective();
         loadSiege();
         loadKaon();
+        loadWild();
         loadCoreUnits();
         loadSandbox();
         loadExtra();
+    }
+    public static void loadWild()
+    {
+        joltarr = new UnitType("joltarr")
+        {{
+            localizedName = "Joltarr";
+            health = 640;
+            armor = 3;
+            speed = 7f / 7.5f;
+            legCount = 6;
+            legLength = 9f;
+            legGroupSize = 2;
+            constructor = EntityMapping.map("atrax");
+            immunities = ObjectSet.with(EXStatusEffects.scabbed);
+            abilities.add(new LiquidExplodeAbility(){{
+                liquid = Liquids.nitrogen;
+            }});
+            range = 21*8;
+            weapons.add(new Weapon() {{
+                top = true;
+                x = 0;
+                y = 0;
+                reload = 60;
+                shootStatus = StatusEffects.slow;
+                shootStatusDuration = 61;
+                bullet = new BasicBulletType(1f, 32) {{
+                    lifetime = setRange(21,1);
+                    recoil = 2;
+                    ammoMultiplier = 4;
+                    width = 16f;
+                    height = 16f;
+                    spin = 1;
+                    hitSize = 4;
+                    hitColor = backColor = trailColor = Liquids.nitrogen.color;
+                    frontColor = Color.white;
+                    splashDamageRadius = 8*1.5f;
+                    splashDamage = 20;
+                    status = StatusEffects.freezing;
+                    statusDuration = 3*60;
+                    trailWidth = 4f;
+                    trailLength = 60;
+                    despawnEffect = hitEffect = Liquids.nitrogen.vaporEffect;
+                }};
+            }});
+        }};
+
+        cirkwit = new UnitType("cirkwit")
+        {{
+            health = 300;
+            armor = 1;
+            hitSize = 8f;
+            omniMovement = false;
+            rotateSpeed = 2.5f;
+            constructor = EntityMapping.map("renale");
+            drownTimeMultiplier = 2f;
+            segments = 2;
+            drawBody = false;
+            crushDamage = 0.1f;
+            aiController = HugAI::new;
+            targetAir = false;
+
+            segmentScl = 3f;
+            segmentPhase = 5f;
+            segmentMag = 0.7f;
+            speed = 4f/7.5f;
+        }};
+        cirkwitEgg = new UnitType("cirkwit-egg")
+        {{
+            health = 400;
+            armor = 0;
+            abilities.add(new DamageAbility(400/12));
+            abilities.add(new SpawnDeathAbility(EXUnits.cirkwit,1,0));
+            hitSize = 10f;
+            constructor = EntityMapping.map("renale");
+            targetAir = false;
+            speed = 0f;
+        }};
     }
     public static void loadSandbox()
     {
