@@ -49,7 +49,7 @@ public class EXUnits{
     /*Sandbox Path*/probe,voyager,satellite,
     /*Extra units*/maxwell,smallTrajectoryCar, largeTrajectoryCar,
 
-            /*Wild unitrs*/joltarr,cirkwit,cirkwitEgg
+            /*Wild unitrs*/joltarr,joltarrEgg,joltarrCapsule,cirkwit,cirkwitEgg,cirkwitCapsule,ampross
 
             /*Bosses*/
             ;
@@ -72,8 +72,8 @@ public class EXUnits{
             localizedName = "Joltarr";
             health = 640;
             armor = 3;
-            speed = 7f / 7.5f;
-            legCount = 6;
+            speed = 3f / 7.5f;
+            legCount = 4;
             legLength = 9f;
             legGroupSize = 2;
             constructor = EntityMapping.map("atrax");
@@ -109,9 +109,25 @@ public class EXUnits{
                 }};
             }});
         }};
-
+        joltarrEgg = new UnitType("joltarr-egg")
+        {{
+            localizedName = "Joltarr Egg";
+            health = 600;
+            armor = 0;
+            abilities.add(new DamageAbility(600/25));
+            abilities.add(new SpawnDeathAbility(EXUnits.joltarr,1,0));
+            abilities.add(new LiquidExplodeAbility(){{
+                liquid = EXLiquids.ammonia;
+                amount = 6*9;
+            }});
+            hitSize = 10f;
+            constructor = EntityMapping.map("renale");
+            targetAir = false;
+            speed = 0f;
+        }};
         cirkwit = new UnitType("cirkwit")
         {{
+            localizedName = "Cirkwit";
             health = 300;
             armor = 1;
             hitSize = 8f;
@@ -132,14 +148,81 @@ public class EXUnits{
         }};
         cirkwitEgg = new UnitType("cirkwit-egg")
         {{
+            localizedName = "Cirkwit Egg";
             health = 400;
             armor = 0;
             abilities.add(new DamageAbility(400/12));
             abilities.add(new SpawnDeathAbility(EXUnits.cirkwit,1,0));
+            abilities.add(new LiquidExplodeAbility(){{
+                liquid = EXLiquids.ammonia;
+                amount = 6*9;
+            }});
             hitSize = 10f;
             constructor = EntityMapping.map("renale");
             targetAir = false;
             speed = 0f;
+        }};
+        cirkwitCapsule = new UnitType("cirkwit-capsule")
+        {{
+            localizedName = "Cirkwit Capsule";
+            health = 1300;
+            armor = 10;
+            abilities.add(new SpawnDeathAbility(EXUnits.cirkwitEgg,3,8));
+            abilities.add(new LiquidExplodeAbility(){{
+                liquid = EXLiquids.ammonia;
+                amount = 6*20;
+            }});
+            hitSize = 14;
+            constructor = EntityMapping.map("renale");
+            speed = 0;
+        }};
+        joltarrCapsule = new UnitType("joltarr-capsule")
+        {{
+            localizedName = "Joltarr Capsule";
+            health = 8000;
+            armor = 22;
+            abilities.add(new SpawnDeathAbility(EXUnits.joltarrEgg,2,8));
+            abilities.add(new SpawnDeathAbility(EXUnits.cirkwitEgg,5,16));
+            abilities.add(new LiquidExplodeAbility(){{
+                liquid = EXLiquids.ammonia;
+                amount = 6*9;
+            }});
+            hitSize = 16f;
+            constructor = EntityMapping.map("renale");
+            targetAir = false;
+            speed = 0f;
+        }};
+        ampross = new UnitType("ampross")
+        {{
+            localizedName = "Ampross";
+            health = 1400;
+            armor = 5;
+            speed = 2/7.5f;
+            range = 18*8;
+            legCount = 6;
+            legLength = 14f;
+            legGroupSize = 2;
+            constructor = EntityMapping.map("atrax");
+            immunities = ObjectSet.with(EXStatusEffects.scabbed);
+            abilities.add(
+                    new SpawnDeathAbility(EXUnits.cirkwitEgg,2,8),
+                    new UnitSpawnAbility(EXUnits.cirkwitEgg,20*60,0,-8)
+            );
+            weapons.add(new Weapon()
+            {{
+                reload = 15;
+                x = 0;
+                y = 0;
+                inaccuracy = 14;
+                bullet = new BasicBulletType(6,21)
+                {{
+                     lifetime = setRange(18,6);
+                     trailLength = 40;
+                     trailWidth = 1.5f;
+                     statusDuration = 300;
+                     status = StatusEffects.freezing;
+                }};
+            }});
         }};
     }
     public static void loadSandbox()
